@@ -16,4 +16,12 @@ public class FuncionarioService {
     public List<Funcionario> getAll(){
         return funcionarioRepository.getAll();
     }
+
+    public Funcionario create(Funcionario funcionario) {
+        try {
+            return funcionarioRepository.create(funcionario);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
 }
