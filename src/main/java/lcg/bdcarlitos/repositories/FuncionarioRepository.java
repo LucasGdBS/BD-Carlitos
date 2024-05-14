@@ -25,8 +25,12 @@ public class FuncionarioRepository {
     };
 
     public List<Funcionario> getAll(){
-        String sql = "select * from Funcionario";
-        return jdbcTemplate.query(sql, rowMapper);
+        try{
+            String sql = "select * from Funcionario";
+            return jdbcTemplate.query(sql, rowMapper);
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
     }
 
     public Funcionario create(Funcionario funcionario) {
@@ -35,6 +39,15 @@ public class FuncionarioRepository {
             jdbcTemplate.update(sql, funcionario.getCpf(), funcionario.getNome(), funcionario.getSalario());
             return funcionario;
         } catch (DataAccessException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public List<Funcionario> findByName(String name){
+        try{
+            String sql = "select * from Funcionario where nome like ?";
+            return jdbcTemplate.query(sql,new Object[]{"%" + name + "%"}, rowMapper);
+        }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }
     }

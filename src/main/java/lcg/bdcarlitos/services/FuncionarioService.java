@@ -24,4 +24,8 @@ public class FuncionarioService {
             throw new RuntimeException(e.getCause());
         }
     }
+
+    public List<Funcionario> findByName(String name){
+        return funcionarioRepository.findByName(name);
+    }
 }

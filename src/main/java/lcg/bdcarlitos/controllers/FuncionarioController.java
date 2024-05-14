@@ -26,6 +26,15 @@ public class FuncionarioController {
         }
     }
 
+    @GetMapping("/buscar-por-nome")
+    public ResponseEntity<?> findFuncionariosByName(@RequestParam String nome){
+        try{
+            return new ResponseEntity<>(funcionarioService.findByName(nome), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Erro ao encontrar funcionario " + e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PostMapping("/")
     public ResponseEntity<?> createFuncionario(@RequestBody Funcionario funcionario){
         try{
