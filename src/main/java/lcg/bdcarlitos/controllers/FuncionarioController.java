@@ -2,7 +2,7 @@ package lcg.bdcarlitos.controllers;
 
 
 import lcg.bdcarlitos.entities.Funcionario;
-import lcg.bdcarlitos.repositories.FuncionarioRepository;
+import lcg.bdcarlitos.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,10 +15,10 @@ import java.util.List;
 public class FuncionarioController {
 
     @Autowired
-    private FuncionarioRepository funcionarioRepository;
+    private FuncionarioService funcionarioService;
 
     @GetMapping("/")
-    public List<Funcionario> listarFuncionarios(){
-        return funcionarioRepository.listarFuncionarios();
+    public List<Funcionario> getAllFuncionarios(){
+        return funcionarioService.getAll();
     }
 }
