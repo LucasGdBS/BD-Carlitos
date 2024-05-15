@@ -46,7 +46,7 @@ public class FuncionarioRepository {
     public List<Funcionario> findByName(String name){
         try{
             String sql = "select * from Funcionario where nome like ?";
-            return jdbcTemplate.query(sql,new Object[]{"%" + name + "%"}, rowMapper);
+            return jdbcTemplate.query(sql, rowMapper, "%"+name+"%");
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }
