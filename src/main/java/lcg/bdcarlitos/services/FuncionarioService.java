@@ -29,6 +29,16 @@ public class FuncionarioService {
         return funcionarioRepository.findByName(name);
     }
 
+    public Funcionario findByCpf(String cpf){
+        Funcionario funcionario = funcionarioRepository.findByCpf(cpf);
+        if (funcionario != null){
+            System.out.println(true);
+            return funcionario;
+        }
+        System.out.println(false);
+        return null;
+    }
+
     public Funcionario update(String cpf, Funcionario funcionario){
         try{
             Funcionario funcExistente = funcionarioRepository.findByCpf(cpf);

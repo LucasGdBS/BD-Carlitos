@@ -2,7 +2,9 @@ package lcg.bdcarlitos.controllers;
 
 
 import lcg.bdcarlitos.entities.Funcionario;
+import lcg.bdcarlitos.repositories.FuncionarioRepository;
 import lcg.bdcarlitos.services.FuncionarioService;
+import org.apache.tomcat.util.http.parser.HttpParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,15 @@ public class FuncionarioController {
     public ResponseEntity<?> findFuncionariosByName(@RequestParam String nome){
         try{
             return new ResponseEntity<>(funcionarioService.findByName(nome), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Erro ao encontrar funcionario " + e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/buscar-por-cpf")
+    public ResponseEntity<?> findFuncionariosByCpf(@RequestParam String cpf){
+        try{
+            return new ResponseEntity<>(funcionarioService.findByCpf(cpf), HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>("Erro ao encontrar funcionario " + e.getMessage(), HttpStatus.NOT_FOUND);
         }

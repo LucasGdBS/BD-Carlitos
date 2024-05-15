@@ -3,6 +3,7 @@ package lcg.bdcarlitos.repositories;
 import lcg.bdcarlitos.entities.Funcionario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -52,12 +53,14 @@ public class FuncionarioRepository {
         }
     }
 
-    public Funcionario findByCpf(String cpf){
-        try{
-            String sql = "select * from Funcionario where cpf = ?";
+    public Funcionario findByCpf(String cpf) {
+        try {
+            String sql = "SELECT * FROM Funcionario WHERE cpf = ?";
             return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
-        }catch (DataAccessException e){
-            throw new RuntimeException(e.getCause());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        } catch (DataAccessException e) {
+            throw e;
         }
     }
 
