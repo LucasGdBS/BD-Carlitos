@@ -29,15 +29,7 @@ public class FuncionarioService {
         return funcionarioRepository.findByName(name);
     }
 
-    public Funcionario findByCpf(String cpf){
-        Funcionario funcionario = funcionarioRepository.findByCpf(cpf);
-        if (funcionario != null){
-            System.out.println(true);
-            return funcionario;
-        }
-        System.out.println(false);
-        return null;
-    }
+    public Funcionario findByCpf(String cpf){ return funcionarioRepository.findByCpf(cpf); }
 
     public Funcionario update(String cpf, Funcionario funcionario){
         try{
@@ -53,5 +45,13 @@ public class FuncionarioService {
         }catch (Exception e){
             throw new RuntimeException(e.getCause());
         }
+    }
+
+    public void delete(String cpf){
+        Funcionario funcionarioExistente = funcionarioRepository.findByCpf(cpf);
+        if (funcionarioExistente == null){
+            throw new RuntimeException("Funcionario não encontrado");
+        }
+        funcionarioRepository.deleteFuncionario(cpf);
     }
 }

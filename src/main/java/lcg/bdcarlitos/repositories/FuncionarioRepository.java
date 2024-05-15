@@ -73,4 +73,9 @@ public class FuncionarioRepository {
             throw new RuntimeException(e.getCause());
         }
     }
+
+    public void deleteFuncionario(String cpf){
+        String sql = "delete from Funcionario where cpf = ?";
+        jdbcTemplate.update(sql, cpf);
+    }
 }

@@ -40,7 +40,11 @@ public class FuncionarioController {
     @GetMapping("/buscar-por-cpf")
     public ResponseEntity<?> findFuncionariosByCpf(@RequestParam String cpf){
         try{
-            return new ResponseEntity<>(funcionarioService.findByCpf(cpf), HttpStatus.OK);
+            Funcionario funcionario = funcionarioService.findByCpf(cpf);
+            if (funcionario != null){
+                return new ResponseEntity<>(funcionario, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>("Erro ao encontrar funcionario " + e.getMessage(), HttpStatus.NOT_FOUND);
         }
@@ -69,5 +73,15 @@ public class FuncionarioController {
             return new ResponseEntity<>("Erro ao editar Funcionario " + e.getCause(), HttpStatus.BAD_REQUEST);
         }
 
+    }
+
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity<?> deleteFuncionario(@PathVariable String cpf){
+        try{
+            funcionarioService.delete(cpf);
+            return new ResponseEntity<>("Funcionario deletado", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 }
