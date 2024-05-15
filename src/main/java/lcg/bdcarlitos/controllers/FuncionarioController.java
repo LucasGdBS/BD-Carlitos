@@ -56,7 +56,7 @@ public class FuncionarioController {
             return new ResponseEntity<>(funcionarioService.create(funcionario), HttpStatus.CREATED);
         }
         catch (Exception e){
-            return new ResponseEntity<>("Erro ao criar Funcionario: " + e.getCause(),
+            return new ResponseEntity<>("Erro ao criar Funcionario: " + e.getMessage(),
                     HttpStatus.BAD_REQUEST);
         }
     }

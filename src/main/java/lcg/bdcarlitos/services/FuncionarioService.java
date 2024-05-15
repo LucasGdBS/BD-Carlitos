@@ -18,11 +18,10 @@ public class FuncionarioService {
     }
 
     public Funcionario create(Funcionario funcionario) {
-        try {
-            return funcionarioRepository.create(funcionario);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getCause());
-        }
+        if (funcionario.getCpf().isBlank()){throw new RuntimeException("Campo CPF vazio");}
+        if (funcionario.getNome().isBlank()){throw new RuntimeException("Campo Nome vazio");}
+        if (funcionario.getSalario() == 0.0){throw new RuntimeException("Campo Salario vazio");}
+        return funcionarioRepository.create(funcionario);
     }
 
     public List<Funcionario> findByName(String name){
@@ -35,9 +34,9 @@ public class FuncionarioService {
         try{
             Funcionario funcExistente = funcionarioRepository.findByCpf(cpf);
             if (funcExistente != null){
-                if (funcionario.getNome() == null){funcionario.setNome(funcExistente.getNome());}
+                if (funcionario.getNome() == null || funcionario.getNome().isBlank()){funcionario.setNome(funcExistente.getNome());}
                 if (funcionario.getSalario() == 0.0){funcionario.setSalario(funcExistente.getSalario());}
-                if (funcionario.getCpf() == null){funcionario.setCpf(funcExistente.getCpf());}
+                if (funcionario.getCpf() == null || funcionario.getCpf().isBlank()){funcionario.setCpf(funcExistente.getCpf());}
                 return funcionarioRepository.updateByCpf(cpf, funcionario);
             }else{
                 return null;
