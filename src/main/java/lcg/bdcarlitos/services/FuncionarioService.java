@@ -28,4 +28,20 @@ public class FuncionarioService {
     public List<Funcionario> findByName(String name){
         return funcionarioRepository.findByName(name);
     }
+
+    public Funcionario update(String cpf, Funcionario funcionario){
+        try{
+            Funcionario funcExistente = funcionarioRepository.findByCpf(cpf);
+            if (funcExistente != null){
+                if (funcionario.getNome() == null){funcionario.setNome(funcExistente.getNome());}
+                if (funcionario.getSalario() == 0.0){funcionario.setSalario(funcExistente.getSalario());}
+                if (funcionario.getCpf() == null){funcionario.setCpf(funcExistente.getCpf());}
+                return funcionarioRepository.updateByCpf(cpf, funcionario);
+            }else{
+                return null;
+            }
+        }catch (Exception e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
 }

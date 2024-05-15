@@ -45,4 +45,18 @@ public class FuncionarioController {
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/editar-por-cpf/{cpf}")
+    public ResponseEntity<?> editFuncionario(@PathVariable String cpf, @RequestBody Funcionario funcionario){
+        try{
+            Funcionario funcionarioExistente = funcionarioService.update(cpf, funcionario);
+            return new ResponseEntity<>(funcionarioExistente, HttpStatus.OK);
+        }catch (Exception e){
+            if (e.getCause() == null){
+                return new ResponseEntity<>("Funcionario não encontrado", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>("Erro ao editar Funcionario " + e.getCause(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }

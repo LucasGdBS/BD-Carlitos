@@ -51,4 +51,23 @@ public class FuncionarioRepository {
             throw new RuntimeException(e.getCause());
         }
     }
+
+    public Funcionario findByCpf(String cpf){
+        try{
+            String sql = "select * from Funcionario where cpf = ?";
+            return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public Funcionario updateByCpf(String cpf, Funcionario funcionario){
+        try{
+            String sql = "UPDATE Funcionario SET nome = ?, salario = ? WHERE cpf = ?";
+            jdbcTemplate.update(sql, funcionario.getNome(), funcionario.getSalario(), cpf);
+            return funcionario;
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
 }
