@@ -14,4 +14,9 @@ public class GerenteService {
     private GerenteRepository gerenteRepository;
 
     public List<Funcionario> getAll() { return gerenteRepository.getAll(); }
+
+    public List<Funcionario> findByName(String name){
+        return gerenteRepository.findByName(name);
+    }
+
 }

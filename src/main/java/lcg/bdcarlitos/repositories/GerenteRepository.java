@@ -15,6 +15,7 @@ public class GerenteRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    private FuncionarioRepository funcionarioRepository;
 
     private RowMapper<Funcionario> rowMapper = (ResultSet rs, int rowNum) -> {
         Funcionario funcionario = new Funcionario();
@@ -29,6 +30,17 @@ public class GerenteRepository {
             String sql = "SELECT f.cpf, f.nome, f.salario FROM Gerente g " +
                     "JOIN Funcionario f ON f.cpf = g.cpf";
             return jdbcTemplate.query(sql, rowMapper);
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public List<Funcionario> findByName(String name){
+        try{
+            String sql = "SELECT f.cpf, f.nome, f.salario FROM Gerente g " +
+                    "JOIN Funcionario f ON f.cpf = g.cpf " +
+                    "where f.nome like ?";
+            return jdbcTemplate.query(sql, rowMapper, "%"+name+"%");
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }
