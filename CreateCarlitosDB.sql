@@ -28,7 +28,9 @@ create table atendentes(
 
 create table motoqueiro(
 	cpf varchar(15),
+	gerente_motoqueiro varchar(15),
 	constraint motoqueiro_pk primary key (cpf),
+	constraint fk_gerente foreign key (gerente_motoqueiro) references motoqueiro(cpf) on delete cascade,
 	constraint fk_motoqueiro_funcionario foreign key (cpf) references funcionario(cpf) on delete cascade
 );
 
@@ -110,9 +112,9 @@ INSERT INTO atendentes (cpf, gerente, turno) VALUES
 ('777.888.999-00', '222.333.444-55', 'MANHÃ');
 
 -- Povoamento da tabela motoqueiro
-INSERT INTO motoqueiro (cpf) VALUES
-('777.888.999-00'),
-('111.222.333-44');
+INSERT INTO motoqueiro (cpf, gerente_motoqueiro) VALUES
+('777.888.999-00', NULL),
+('111.222.333-44', '777.888.999-00');
 
 -- Povoamento da tabela clientes
 INSERT INTO clientes (telefone, cep, rua, bairro, numero, complemento, nome) VALUES
