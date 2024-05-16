@@ -13,28 +13,28 @@ create table funcionario(
 create table gerente(
 	cpf varchar(15),
 	constraint gerente_pk primary key (cpf),
-	constraint fk_funcionario_cpf foreign key (cpf) references funcionario(cpf)
+	constraint fk_funcionario_cpf foreign key (cpf) references funcionario(cpf) on delete cascade
 );
 
 create table atendentes(
 	cpf varchar(15),
 	gerente varchar(15),
-	turno varchar(5),
+	turno varchar(10),
 	constraint atendente_pk primary key (cpf),
-	constraint fk_funcionario_cpf2 foreign key (cpf) references funcionario(cpf),
-	constraint fk_gerente_fk_funcionario_cpf foreign key (gerente) references gerente(cpf),
+	constraint fk_funcionario_cpf2 foreign key (cpf) references funcionario(cpf) on delete cascade,
+	constraint fk_gerente_fk_funcionario_cpf foreign key (gerente) references gerente(cpf) on delete cascade,
 	constraint projeto_turno_ck check (turno in ('MANHÃ', 'NOITE'))
 );
 
 create table motoqueiro(
 	cpf varchar(15),
 	constraint motoqueiro_pk primary key (cpf),
-	constraint fk_motoqueiro_funcionario foreign key (cpf) references funcionario(cpf)
+	constraint fk_motoqueiro_funcionario foreign key (cpf) references funcionario(cpf) on delete cascade
 );
 
 create table clientes(
-	telefone varchar(14),
-	cep varchar(9),
+	telefone varchar(50),
+	cep varchar(20),
 	rua varchar(100),
 	bairro varchar(100),
 	numero varchar(100),
@@ -58,13 +58,13 @@ create table pedido(
 	desconto float,
 	qnt_produto int,
 	num_pedido int,
-	telefone_cliente varchar(14),
+	telefone_cliente varchar(50),
 	produto_id int,
 	atendente_cpf varchar(15),
 	constraint pedido_pk primary key (num_pedido, telefone_cliente, produto_id, atendente_cpf),
-	constraint fk_clientes_telefone foreign key (telefone_cliente) references clientes(telefone),
-	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto),
-	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf)
+	constraint fk_clientes_telefone foreign key (telefone_cliente) references clientes(telefone) on delete cascade,
+	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto) on delete cascade,
+	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf) on delete cascade
 );
 
 create table ingredientes(
@@ -82,8 +82,8 @@ create table ingredientes_produto(
 	produto_id int,
 	codigo_ingrediente int,
 	constraint pk_ingredietes_produto primary key (produto_id, codigo_ingrediente),
-	constraint fk_produto_id_produto2 foreign key (produto_id) references produto(id_produto),
-	constraint fk_ingredientes_codigo foreign key (codigo_ingrediente) references ingredientes(codigo)
+	constraint fk_produto_id_produto2 foreign key (produto_id) references produto(id_produto) on delete cascade,
+	constraint fk_ingredientes_codigo foreign key (codigo_ingrediente) references ingredientes(codigo) on delete cascade
 );
 
 -- Povoamento da tabela funcionario
