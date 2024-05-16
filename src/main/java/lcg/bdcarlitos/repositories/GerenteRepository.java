@@ -3,6 +3,7 @@ package lcg.bdcarlitos.repositories;
 import lcg.bdcarlitos.entities.Funcionario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -44,5 +45,21 @@ public class GerenteRepository {
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }
+    }
+
+    public Funcionario findByCpf(String cpf) {
+        try {
+            String sql = "SELECT f.cpf, f.nome, f.salario FROM Gerente g " +
+                    "JOIN Funcionario f ON f.cpf = g.cpf " +
+                    "where f.cpf = ?";
+            return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public void deleteFuncionario(String cpf){
+        String sql = "delete from Gerente where cpf = ?";
+        jdbcTemplate.update(sql, cpf);
     }
 }

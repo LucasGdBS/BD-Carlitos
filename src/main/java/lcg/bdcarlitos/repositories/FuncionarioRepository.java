@@ -59,8 +59,6 @@ public class FuncionarioRepository {
             return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
         } catch (EmptyResultDataAccessException e) {
             return null;
-        } catch (DataAccessException e) {
-            throw e;
         }
     }
 

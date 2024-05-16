@@ -19,4 +19,13 @@ public class GerenteService {
         return gerenteRepository.findByName(name);
     }
 
+    public Funcionario findByCpf(String cpf){ return gerenteRepository.findByCpf(cpf); }
+
+    public void delete(String cpf){
+        Funcionario funcionarioExistente = gerenteRepository.findByCpf(cpf);
+        if (funcionarioExistente == null){
+            throw new RuntimeException("Funcionario não encontrado");
+        }
+        gerenteRepository.deleteFuncionario(cpf);
+    }
 }
