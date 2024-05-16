@@ -24,8 +24,13 @@ public class GerenteService {
     public void delete(String cpf){
         Funcionario funcionarioExistente = gerenteRepository.findByCpf(cpf);
         if (funcionarioExistente == null){
-            throw new RuntimeException("Funcionario não encontrado");
+            throw new RuntimeException("Gerente não encontrado");
         }
         gerenteRepository.deleteFuncionario(cpf);
+    }
+
+    public void create(String cpf){
+        if (cpf.isBlank()){throw new RuntimeException("Campo CPF vazio");}
+        gerenteRepository.create(cpf);
     }
 }

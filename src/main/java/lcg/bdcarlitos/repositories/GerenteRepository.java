@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Repository
@@ -32,6 +33,19 @@ public class GerenteRepository {
                     "JOIN Funcionario f ON f.cpf = g.cpf";
             return jdbcTemplate.query(sql, rowMapper);
         }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public void create(String cpf){
+        try {
+            String sql = "INSERT INTO Gerente(cpf) VALUES (?)";
+            System.out.println(cpf);
+            jdbcTemplate.update(sql, cpf);
+        } catch (DataAccessException e) {
+            if (e.getCause() instanceof SQLIntegrityConstraintViolationException){
+                throw new RuntimeException("Gerente ja existente ou funcionario não cadastrado", e);
+            }
             throw new RuntimeException(e.getCause());
         }
     }

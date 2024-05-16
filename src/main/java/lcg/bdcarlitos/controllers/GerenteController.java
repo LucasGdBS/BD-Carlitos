@@ -1,6 +1,7 @@
 package lcg.bdcarlitos.controllers;
 
 import lcg.bdcarlitos.entities.Funcionario;
+import lcg.bdcarlitos.entities.Gerente;
 import lcg.bdcarlitos.services.GerenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,6 +55,18 @@ public class GerenteController {
             return new ResponseEntity<>("Cargo de gerente retirado", HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("")
+    public ResponseEntity<?> createGerente(@RequestBody Gerente gerente){
+        try{
+            gerenteService.create(gerente.getCpf());
+            return new ResponseEntity<>("Cargo de gerente atribuido com sucesso", HttpStatus.CREATED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Erro ao atribuir cargo de gerente: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
         }
     }
 }
