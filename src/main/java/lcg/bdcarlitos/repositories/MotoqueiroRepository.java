@@ -1,7 +1,7 @@
 package lcg.bdcarlitos.repositories;
 
 
-import lcg.bdcarlitos.entities.Funcionario;
+
 import lcg.bdcarlitos.entities.Motoqueiro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -20,7 +20,7 @@ public class MotoqueiroRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<Motoqueiro> rowMapper = (ResultSet rs, int rowNum) -> {
+    private final RowMapper<Motoqueiro> rowMapper = (ResultSet rs, int rowNum) -> {
         Motoqueiro motoqueiro = new Motoqueiro();
         motoqueiro.setCpf(rs.getString("cpf"));
         motoqueiro.setNome(rs.getString("nome"));

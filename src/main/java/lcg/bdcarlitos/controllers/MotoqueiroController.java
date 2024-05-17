@@ -1,6 +1,5 @@
 package lcg.bdcarlitos.controllers;
 
-import lcg.bdcarlitos.entities.Funcionario;
 import lcg.bdcarlitos.entities.Motoqueiro;
 import lcg.bdcarlitos.services.MotoqueiroService;
 import org.springframework.beans.factory.annotation.Autowired;
