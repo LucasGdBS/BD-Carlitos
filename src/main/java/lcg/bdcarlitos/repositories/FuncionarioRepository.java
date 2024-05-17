@@ -17,7 +17,7 @@ public class FuncionarioRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private RowMapper<Funcionario> rowMapper = (ResultSet rs, int rowNum) -> {
+    private final RowMapper<Funcionario> rowMapper = (ResultSet rs, int rowNum) -> {
         Funcionario funcionario = new Funcionario();
         funcionario.setCpf(rs.getString("cpf"));
         funcionario.setNome(rs.getString("nome"));

@@ -38,4 +38,16 @@ public class Funcionario {
     public void setSalario(float salario) {
         this.salario = salario;
     }
+
+    public class Cliente {
+
+        private String nome;
+        private String telefone;
+        private String cidade;
+        private String rua;
+        private String bairro;
+        private int numero;
+        private String cep;
+
+    }
 }
