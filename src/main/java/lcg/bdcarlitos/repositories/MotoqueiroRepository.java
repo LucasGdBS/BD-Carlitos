@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 @Repository
@@ -33,6 +34,19 @@ public class MotoqueiroRepository {
                     "left join funcionario f2 on m.gerente_motoqueiro = f2.cpf";
             return jdbcTemplate.query(sql, rowMapper);
         }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public void create(Motoqueiro motoqueiro){
+        try{
+            String sql = "insert into Motoqueiro(cpf, gerente_motoqueiro) values " +
+                    "(?, ?)";
+            jdbcTemplate.update(sql, motoqueiro.getCpf(), motoqueiro.getGerenteMotorqueiro_cpf());
+        }catch (DataAccessException e){
+            if (e.getCause() instanceof SQLIntegrityConstraintViolationException){
+                throw new RuntimeException("Motoqueiro ja existente ou funcionario não cadastrado");
+            }
             throw new RuntimeException(e.getCause());
         }
     }

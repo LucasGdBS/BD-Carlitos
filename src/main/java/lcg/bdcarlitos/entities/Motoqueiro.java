@@ -8,6 +8,11 @@ public class Motoqueiro extends Funcionario {
     public Motoqueiro() {
     }
 
+    public Motoqueiro(String gerenteMotorqueiro_cpf, String cpf) {
+        super(cpf, null, 0.0f);
+        this.gerenteMotorqueiro_cpf = gerenteMotorqueiro_cpf;
+    }
+
     public Motoqueiro(String cpf, String nome, float salario, String gerenteMotorqueiro_cpf, String gerenteMotoqueiro_nome) {
         super(cpf, nome, salario);
         this.gerenteMotorqueiro_cpf = gerenteMotorqueiro_cpf;
