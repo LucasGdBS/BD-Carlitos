@@ -1,9 +1,11 @@
 package lcg.bdcarlitos.repositories;
 
+
 import lcg.bdcarlitos.entities.Funcionario;
 import lcg.bdcarlitos.entities.Motoqueiro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -62,6 +64,23 @@ public class MotoqueiroRepository {
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }
+    }
+
+    public Motoqueiro findByCpf(String cpf) {
+        try {
+            String sql = "select m.cpf, f.nome, f.salario, m.gerente_motoqueiro, " +
+                    "f2.nome as nome_gerente from motoqueiro m join funcionario f on m.cpf = f.cpf " +
+                    "left join funcionario f2 on m.gerente_motoqueiro = f2.cpf " +
+                    "where m.cpf = ?";
+            return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+
+    public void delete(String cpf){
+        String sql = "delete from motoqueiro where cpf = ?";
+        jdbcTemplate.update(sql, cpf);
     }
 
 
