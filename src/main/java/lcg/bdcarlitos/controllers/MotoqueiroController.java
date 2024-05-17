@@ -35,4 +35,14 @@ public class MotoqueiroController {
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/buscar-por-nome")
+    public ResponseEntity<?> findMotoqueiroByName(@RequestParam String nome){
+        try{
+            return new ResponseEntity<>(motoqueiroService.findByName(nome), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Erro ao encontrar motoqueiro " + e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

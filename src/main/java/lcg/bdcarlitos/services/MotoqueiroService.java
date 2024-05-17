@@ -15,6 +15,8 @@ public class MotoqueiroService {
 
     public List<Motoqueiro> getAll(){ return motoqueiroRepository.getAll();}
 
+    public List<Motoqueiro> findByName(String name){ return motoqueiroRepository.findByName(name);}
+
     public void create(Motoqueiro motoqueiro){
         if (motoqueiro.getCpf().isBlank()){throw new RuntimeException("Campo CPF vazio");}
         if (motoqueiro.getGerenteMotorqueiro_cpf().isBlank()){throw new RuntimeException("Campo gerenteCpf vazio");}

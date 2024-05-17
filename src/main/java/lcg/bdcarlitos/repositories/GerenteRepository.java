@@ -72,7 +72,7 @@ public class GerenteRepository {
         }
     }
 
-    public void deleteFuncionario(String cpf){
+    public void deleteGerente(String cpf){
         String sql = "delete from Gerente where cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }

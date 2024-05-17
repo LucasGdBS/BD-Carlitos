@@ -26,7 +26,7 @@ public class GerenteService {
         if (funcionarioExistente == null){
             throw new RuntimeException("Gerente não encontrado");
         }
-        gerenteRepository.deleteFuncionario(cpf);
+        gerenteRepository.deleteGerente(cpf);
     }
 
     public void create(String cpf){
