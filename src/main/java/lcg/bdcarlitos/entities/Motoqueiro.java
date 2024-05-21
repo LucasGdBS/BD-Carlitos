@@ -2,7 +2,7 @@ package lcg.bdcarlitos.entities;
 
 public class Motoqueiro extends Funcionario {
 
-    private String gerenteMotorqueiro_cpf;
+    private String gerenteMotoqueiro_cpf;
     private String gerenteMotoqueiro_nome;
 
     public Motoqueiro() {
@@ -10,21 +10,21 @@ public class Motoqueiro extends Funcionario {
 
     public Motoqueiro(String gerenteMotorqueiro_cpf, String cpf) {
         super(cpf, null, 0.0f);
-        this.gerenteMotorqueiro_cpf = gerenteMotorqueiro_cpf;
+        this.gerenteMotoqueiro_cpf = gerenteMotorqueiro_cpf;
     }
 
     public Motoqueiro(String cpf, String nome, float salario, String gerenteMotorqueiro_cpf, String gerenteMotoqueiro_nome) {
         super(cpf, nome, salario);
-        this.gerenteMotorqueiro_cpf = gerenteMotorqueiro_cpf;
+        this.gerenteMotoqueiro_cpf = gerenteMotorqueiro_cpf;
         this.gerenteMotoqueiro_nome = gerenteMotoqueiro_nome;
     }
 
-    public String getGerenteMotorqueiro_cpf() {
-        return gerenteMotorqueiro_cpf;
+    public String getGerenteMotoqueiro_cpf() {
+        return gerenteMotoqueiro_cpf;
     }
 
-    public void setGerenteMotorqueiro_cpf(String gerenteMotorqueiro_cpf) {
-        this.gerenteMotorqueiro_cpf = gerenteMotorqueiro_cpf;
+    public void setGerenteMotoqueiro_cpf(String gerenteMotoqueiro_cpf) {
+        this.gerenteMotoqueiro_cpf = gerenteMotoqueiro_cpf;
     }
 
     public String getGerenteMotoqueiro_nome() {
