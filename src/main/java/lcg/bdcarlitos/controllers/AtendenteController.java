@@ -45,4 +45,22 @@ public class AtendenteController {
             return new ResponseEntity<>("Erro ao criar atendente "+ e.getMessage() , HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping("/buscar-por-nome")
+    public ResponseEntity<?> findAtendentesByName(@RequestParam String nome){
+        try{
+            return new ResponseEntity<>(atendenteService.findByName(nome), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Erro ao encontrar atendentes " + e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/buscar-por-gerente")
+    public ResponseEntity<?> findAtendentesByGerente(@RequestParam String cpf){
+        try{
+            return new ResponseEntity<>(atendenteService.findByGerente(cpf), HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("Erro ao encontrar atendentes " + e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }

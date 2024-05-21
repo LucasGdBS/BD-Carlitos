@@ -42,6 +42,15 @@ public class AtendenteRepository {
         }
     }
 
+    public void create(Atendente atendente){
+        try{
+            String sql = "insert into atendentes (cpf, gerente, turno) values " +
+                    "(?, ?, ?)";
+            jdbcTemplate.update(sql, atendente.getCpf(), atendente.getCpf_gerente(), atendente.getTurno());
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
     public Atendente findByCpf(String cpf){
         try{
             String sql = "select a.cpf, f.nome, a.turno, f.salario, f2.nome as nome_gerente, g.cpf as cpf_gerente " +
@@ -55,13 +64,30 @@ public class AtendenteRepository {
         }
     }
 
-    public void create(Atendente atendente){
+    public List<Atendente> findByName(String name){
         try{
-            String sql = "insert into atendentes (cpf, gerente, turno) values " +
-                    "(?, ?, ?)";
-            jdbcTemplate.update(sql, atendente.getCpf(), atendente.getCpf_gerente(), atendente.getTurno());
+            String sql = "select a.cpf, f.nome, a.turno, f.salario, f2.nome as nome_gerente, g.cpf as cpf_gerente " +
+                    "from atendentes a\n" +
+                    "join funcionario f on a.cpf = f.cpf " +
+                    "join gerente g on a.gerente = g.cpf " +
+                    "join funcionario f2 on g.cpf = f2.cpf where f.nome like ?";
+            return jdbcTemplate.query(sql, rowMapper, "%"+name+"%");
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }
     }
+
+    public List<Atendente> findByGerenteCpf(String cpf){
+        try{
+            String sql = "select a.cpf, f.nome, a.turno, f.salario, f2.nome as nome_gerente, g.cpf as cpf_gerente " +
+                    "from atendentes a\n" +
+                    "join funcionario f on a.cpf = f.cpf " +
+                    "join gerente g on a.gerente = g.cpf " +
+                    "join funcionario f2 on g.cpf = f2.cpf where a.gerente = ?";
+            return jdbcTemplate.query(sql, rowMapper, cpf);
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
 }
