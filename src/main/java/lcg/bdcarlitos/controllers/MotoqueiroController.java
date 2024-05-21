@@ -68,4 +68,17 @@ public class MotoqueiroController {
         }
     }
 
+    @PutMapping("/editar-por-cpf/{cpf}")
+    public ResponseEntity<?> editMotoqueiro(@PathVariable String cpf, @RequestBody Motoqueiro motoqueiro){
+        try{
+            Motoqueiro motoqueiroExistente = motoqueiroService.update(cpf, motoqueiro);
+            return new ResponseEntity<>(motoqueiroExistente, HttpStatus.OK);
+        }catch (Exception e){
+            if (e.getCause() == null){
+                return new ResponseEntity<>("Motoqueiro não encontrado", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>("Erro ao editar motoqueiro " + e.getCause(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

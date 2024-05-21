@@ -6,9 +6,12 @@ import lcg.bdcarlitos.entities.Motoqueiro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.sql.ResultSet;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -81,6 +84,16 @@ public class MotoqueiroRepository {
     public void delete(String cpf){
         String sql = "delete from motoqueiro where cpf = ?";
         jdbcTemplate.update(sql, cpf);
+    }
+
+    public Motoqueiro updateBycpf(String cpf, Motoqueiro motoqueiro){
+        try{
+            String sql = "UPDATE motoqueiro set gerente_motoqueiro = ? where cpf = ?";
+            jdbcTemplate.update(sql, motoqueiro.getGerenteMotorqueiro_cpf(), cpf);
+            return motoqueiro;
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
     }
 
 

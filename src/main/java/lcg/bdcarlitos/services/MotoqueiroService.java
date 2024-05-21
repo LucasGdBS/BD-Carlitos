@@ -21,7 +21,6 @@ public class MotoqueiroService {
 
     public void create(Motoqueiro motoqueiro){
         if (motoqueiro.getCpf().isBlank()){throw new RuntimeException("Campo CPF vazio");}
-        if (motoqueiro.getGerenteMotorqueiro_cpf().isBlank()){throw new RuntimeException("Campo gerenteCpf vazio");}
         motoqueiroRepository.create(motoqueiro);
     }
 
@@ -31,5 +30,17 @@ public class MotoqueiroService {
             throw new RuntimeException("Motoqueiro não encontrado");
         }
         motoqueiroRepository.delete(cpf);
+    }
+
+    public Motoqueiro update(String cpf, Motoqueiro motoqueiro){
+        try{
+            Motoqueiro motoqueiroExistente = motoqueiroRepository.findByCpf(cpf);
+            if (motoqueiroExistente != null){
+                return motoqueiroRepository.updateBycpf(cpf, motoqueiroExistente);
+            }
+            return null;
+        }catch (Exception e){
+            throw new RuntimeException(e.getCause());
+        }
     }
 }
