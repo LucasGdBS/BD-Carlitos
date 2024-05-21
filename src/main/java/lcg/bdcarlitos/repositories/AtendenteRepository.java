@@ -1,9 +1,9 @@
 package lcg.bdcarlitos.repositories;
 
 import lcg.bdcarlitos.entities.Atendente;
-import lcg.bdcarlitos.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -16,8 +16,6 @@ public class AtendenteRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    @Autowired
-    private FuncionarioService funcionarioService;
 
     private final RowMapper<Atendente> rowMapper = (ResultSet rs, int rowNum) -> {
         Atendente atendente = new Atendente();
@@ -39,6 +37,29 @@ public class AtendenteRepository {
                     "join gerente g on a.gerente = g.cpf " +
                     "join funcionario f2 on g.cpf = f2.cpf";
             return jdbcTemplate.query(sql, rowMapper);
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public Atendente findByCpf(String cpf){
+        try{
+            String sql = "select a.cpf, f.nome, a.turno, f.salario, f2.nome as nome_gerente, g.cpf as cpf_gerente " +
+                    "from atendentes a\n" +
+                    "join funcionario f on a.cpf = f.cpf " +
+                    "join gerente g on a.gerente = g.cpf " +
+                    "join funcionario f2 on g.cpf = f2.cpf where a.cpf = ?";;
+            return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
+        }catch (EmptyResultDataAccessException e){
+            return null;
+        }
+    }
+
+    public void create(Atendente atendente){
+        try{
+            String sql = "insert into atendentes (cpf, gerente, turno) values " +
+                    "(?, ?, ?)";
+            jdbcTemplate.update(sql, atendente.getCpf(), atendente.getCpf_gerente(), atendente.getTurno());
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }

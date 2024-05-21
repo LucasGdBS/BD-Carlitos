@@ -1,15 +1,14 @@
 package lcg.bdcarlitos.controllers;
 
+import lcg.bdcarlitos.entities.Atendente;
 import lcg.bdcarlitos.services.AtendenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/atentendes")
+@RequestMapping("/atendentes")
 public class AtendenteController {
 
     @Autowired
@@ -22,6 +21,28 @@ public class AtendenteController {
         }catch (Exception e){
             return new ResponseEntity<>("Erro ao buscar atendentes" + e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/buscar-por-cpf")
+    public ResponseEntity<?> findAtendentesByCpf(@RequestParam String cpf){
+        try{
+            Atendente atendente = atendenteService.findByCpf(cpf);
+            if (atendente != null){
+                return new ResponseEntity<>(atendente, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>("Erro ao encontrar atendente " + e.getCause(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<?> createAtendente(@RequestBody Atendente atendente){
+        try{
+            return new ResponseEntity<>(atendenteService.create(atendente), HttpStatus.CREATED);
+        }catch (Exception e){
+            return new ResponseEntity<>("Erro ao criar atendente "+ e.getMessage() , HttpStatus.BAD_REQUEST);
         }
     }
 }

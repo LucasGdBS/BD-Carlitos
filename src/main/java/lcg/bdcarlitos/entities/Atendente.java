@@ -18,6 +18,7 @@ public class Atendente extends Funcionario{
         this.nome_gerente = nome_gerente;
     }
 
+
     public String getTurno() {
         return turno;
     }

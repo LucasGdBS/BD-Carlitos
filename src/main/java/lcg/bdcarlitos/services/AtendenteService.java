@@ -14,4 +14,10 @@ public class AtendenteService {
     private AtendenteRepository atendenteRepository;
 
     public List<Atendente> getAll() {return atendenteRepository.getAll(); }
+    public Atendente findByCpf(String cpf) { return atendenteRepository.findByCpf(cpf);}
+
+    public Atendente create(Atendente atendente){
+        atendenteRepository.create(atendente);
+        return atendenteRepository.findByCpf(atendente.getCpf());
+    }
 }
