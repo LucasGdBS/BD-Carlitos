@@ -79,11 +79,10 @@ public class AtendenteController {
     }
 
     @DeleteMapping("/{cpf}")
-    public ResponseEntity<?> deleteFuncionario(@PathVariable String cpf){
+    public ResponseEntity<?> deleteAtendente(@PathVariable String cpf){
         try{
-            String nome = atendenteService.findByCpf(cpf).getNome();
             atendenteService.delete(cpf);
-            return new ResponseEntity<>("Atendente "+ nome +" deletado(a)", HttpStatus.OK);
+            return new ResponseEntity<>("Atendente deletado(a)", HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
