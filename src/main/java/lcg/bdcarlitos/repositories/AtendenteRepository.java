@@ -80,7 +80,7 @@ public class AtendenteRepository {
     public List<Atendente> findByGerenteCpf(String cpf){
         try{
             String sql = "select a.cpf, f.nome, a.turno, f.salario, f2.nome as nome_gerente, g.cpf as cpf_gerente " +
-                    "from atendentes a\n" +
+                    "from atendentes a " +
                     "join funcionario f on a.cpf = f.cpf " +
                     "join gerente g on a.gerente = g.cpf " +
                     "join funcionario f2 on g.cpf = f2.cpf where a.gerente = ?";
@@ -89,5 +89,22 @@ public class AtendenteRepository {
             throw new RuntimeException(e.getCause());
         }
     }
+
+
+    public Atendente updateByCpf(String cpf, Atendente atendente){
+        try{
+            String sql = "UPDATE atendentes SET gerente = ?, turno = ? WHERE cpf = ?";
+            jdbcTemplate.update(sql, atendente.getCpf_gerente(), atendente.getTurno(), cpf);
+            return atendente;
+        }catch (DataAccessException e){
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public void deleteAtendente(String cpf){
+        String sql = "delete from atendentes where cpf = ?";
+        jdbcTemplate.update(sql, cpf);
+    }
+
 
 }

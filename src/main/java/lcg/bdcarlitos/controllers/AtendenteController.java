@@ -63,4 +63,29 @@ public class AtendenteController {
             return new ResponseEntity<>("Erro ao encontrar atendentes " + e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
+
+    @PutMapping("/editar-por-cpf/{cpf}")
+    public ResponseEntity<?> editFuncionario(@PathVariable String cpf, @RequestBody Atendente atendente){
+        try{
+            Atendente funcionarioExistente = atendenteService.update(cpf, atendente);
+            return new ResponseEntity<>(funcionarioExistente, HttpStatus.OK);
+        }catch (Exception e){
+            if (e.getCause() == null){
+                return new ResponseEntity<>("Atendente não encontrado", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>("Erro ao editar Atendente " + e.getCause(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @DeleteMapping("/{cpf}")
+    public ResponseEntity<?> deleteFuncionario(@PathVariable String cpf){
+        try{
+            String nome = atendenteService.findByCpf(cpf).getNome();
+            atendenteService.delete(cpf);
+            return new ResponseEntity<>("Atendente "+ nome +" deletado(a)", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 }
