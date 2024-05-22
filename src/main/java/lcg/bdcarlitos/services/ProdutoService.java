@@ -32,6 +32,8 @@ public class ProdutoService {
             Produto produtoExistente = produtoRepository.findById(id);
             if (produtoExistente != null){
                 if (produto.getId_produto() == 0){produto.setId_produto(produtoExistente.getId_produto());}
+                if (produto.getPreco() == 0.0f){produto.setPreco(produtoExistente.getPreco());}
+                if (produto.getNome() == null){produto.setNome(produtoExistente.getNome());}
                 return produtoRepository.updateById(id, produto);
             }else{ return null; }
         }catch (Exception e){
@@ -42,7 +44,7 @@ public class ProdutoService {
     public void delete(int id){
         Produto produtoExistente = produtoRepository.findById(id);
         if (produtoExistente == null){
-            throw new RuntimeException("Funcionario não encontrado");
+            throw new RuntimeException("Produto não encontrado");
         }
         produtoRepository.deleteProduto(id);
     }

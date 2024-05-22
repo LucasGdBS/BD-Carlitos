@@ -21,6 +21,7 @@ public class ProdutoRepository {
         Produto produto = new Produto();
         produto.setId_produto(rs.getInt("id_produto"));
         produto.setNome(rs.getString("nome"));
+        produto.setPreco(rs.getDouble("preco"));
         return produto;
     };
 
@@ -35,8 +36,8 @@ public class ProdutoRepository {
 
     public Produto create(Produto produto) {
         try {
-            String sql = "INSERT INTO Produto(nome) VALUES (?)";
-            jdbcTemplate.update(sql, produto.getNome());
+            String sql = "INSERT INTO Produto(nome, preco) VALUES (?, ?)";
+            jdbcTemplate.update(sql, produto.getNome(), produto.getPreco());
             return produto;
         } catch (DataAccessException e) {
             throw new RuntimeException(e.getCause());
@@ -63,8 +64,8 @@ public class ProdutoRepository {
 
     public Produto updateById(int id, Produto produto){
         try{
-            String sql = "UPDATE produto SET nome = ? WHERE id_produto = ?";
-            jdbcTemplate.update(sql, produto.getNome(), id);
+            String sql = "UPDATE produto SET nome = ?, preco = ? WHERE id_produto = ?";
+            jdbcTemplate.update(sql, produto.getNome(), produto.getPreco(), id);
             return produto;
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
