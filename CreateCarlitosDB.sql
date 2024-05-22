@@ -75,7 +75,7 @@ create table ingredientes(
 	dt_validade date,
 	quantidade int,
 	valor float, 
-	codigo int,
+	codigo int AUTO_INCREMENT,
 	tipo_alimento varchar(20),
 	constraint tipo_alimento_ck check (tipo_alimento in ('Porcionado', 'Fatiado', 'Unitario')),
 	constraint ingredients_pk primary key (codigo)
