@@ -7,10 +7,7 @@ import lcg.bdcarlitos.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/cliente")
@@ -47,10 +44,43 @@ public class ClienteController {
             }
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity<>("Erro ao encontrar funcionario " + e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Erro ao encontrar cliente " + e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
+    @PostMapping("/")
+    public ResponseEntity<?> createCliente(@RequestBody Cliente cliente){
+        try{
+            return new ResponseEntity<>(clienteService.create(cliente), HttpStatus.CREATED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Erro ao criar Cliente: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
 
+    @PutMapping("/editar-por-telefone/{telefone}")
+    public ResponseEntity<?> editCliente(@PathVariable String telefone, @RequestBody Cliente cliente){
+        try{
+            Cliente clienteExistente = clienteService.update(telefone, cliente);
+            return new ResponseEntity<>(clienteExistente, HttpStatus.OK);
+        }catch (Exception e){
+            if (e.getCause() == null){
+                return new ResponseEntity<>("Cliente não encontrado", HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<>("Erro ao editar Cliente " + e.getCause(), HttpStatus.BAD_REQUEST);
+        }
+
+    }
+
+    @DeleteMapping("/{telefone}")
+    public ResponseEntity<?> deleteCliente(@PathVariable String telefone){
+        try{
+            clienteService.delete(telefone);
+            return new ResponseEntity<>("Cliente deletado", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
 
 }

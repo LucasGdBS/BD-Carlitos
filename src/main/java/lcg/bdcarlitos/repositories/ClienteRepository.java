@@ -18,8 +18,10 @@ public class ClienteRepository {
 
     private final RowMapper<Cliente> rowMapper = (ResultSet rs, int rowNum) -> {
         Cliente cliente = new Cliente();
+        cliente.setId_cliente(rs.getInt("id_cliente"));
         cliente.setNome(rs.getString("nome"));
-        cliente.setTelefone(rs.getString("telefone"));
+        cliente.setTelefone_1(rs.getString("telefone_1"));
+        cliente.setTelefone_2(rs.getString("telefone_2"));
         cliente.setComplemento(rs.getString("complemento"));
         cliente.setRua(rs.getString("rua"));
         cliente.setBairro(rs.getString("bairro"));
@@ -39,10 +41,12 @@ public class ClienteRepository {
 
     public Cliente create(Cliente cliente) {
         try {
-            String sql = "INSERT INTO Cliente(nome, telefone, complemento, rua, bairro, numero, cep) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Cliente(id_cliente, nome, telefone_1, telefone_2, complemento, rua, bairro, numero, cep) VALUES (?, ?, ?, ?, ?, ?, ?)";
             jdbcTemplate.update(sql,
+                    cliente.getId_cliente(),
                     cliente.getNome(),
-                    cliente.getTelefone(),
+                    cliente.getTelefone_1(),
+                    cliente.getTelefone_2(),
                     cliente.getComplemento(),
                     cliente.getRua(),
                     cliente.getBairro(),
@@ -66,7 +70,8 @@ public class ClienteRepository {
 
     public Cliente findByPhone(String Phone) {
         try {
-            String sql = "select * from Clientes where telefone like ?";
+            String sql = "select * from Clientes where (telefone_1 like ?) or (telefone_2 like ?) ";
+
             return jdbcTemplate.queryForObject(sql, rowMapper, "%" + Phone + "%");
         } catch (DataAccessException e) {
             throw new RuntimeException(e.getCause());

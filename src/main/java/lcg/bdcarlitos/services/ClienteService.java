@@ -19,7 +19,8 @@ public class ClienteService {
 
     public Cliente create(Cliente cliente) {
         if (cliente.getNome().isBlank()) { throw new RuntimeException("Campo Nome vazio"); }
-        if (cliente.getTelefone().isBlank()) { throw new RuntimeException("Campo Telefone vazio");}
+        if (cliente.getTelefone_1().isBlank()) { throw new RuntimeException("Campo Telefone 1 vazio");}
+        if (cliente.getTelefone_2().isBlank()) { throw new RuntimeException("Campo Telefone 1 vazio");}
         if (cliente.getComplemento().isBlank()) { throw new RuntimeException("Campo Cidade vazio"); }
         if (cliente.getRua().isBlank()) { throw new RuntimeException("Campo Rua vazio"); }
         if (cliente.getBairro().isBlank()) { throw new RuntimeException("Campo Bairro vazio"); }
@@ -39,7 +40,8 @@ public class ClienteService {
             Cliente clienteExistente = clienteRepository.findByPhone(phone);
             if (clienteExistente != null){
                 if (cliente.getNome() == null || cliente.getNome().isBlank()){cliente.setNome(clienteExistente.getNome());}
-                if (cliente.getTelefone() == null || cliente.getTelefone().isBlank()){cliente.setTelefone(clienteExistente.getTelefone());}
+                if (cliente.getTelefone_1() == null || cliente.getTelefone_1().isBlank()){cliente.setTelefone_1(clienteExistente.getTelefone_1());}
+                if (cliente.getTelefone_2() == null || cliente.getTelefone_2().isBlank()){cliente.setTelefone_2(clienteExistente.getTelefone_1());}
                 if (cliente.getRua() == null || cliente.getRua().isBlank()) { cliente.setRua(clienteExistente.getRua()); }
                 if (cliente.getBairro() == null || cliente.getBairro().isBlank()) {cliente.setBairro(clienteExistente.getBairro());}
                 if (cliente.getComplemento() == null || cliente.getComplemento().isBlank()) { cliente.setComplemento(clienteExistente.getComplemento()); }
