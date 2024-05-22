@@ -1,6 +1,6 @@
 -- SCRIPT CRIAÇÃO
-CREATE DATABASE CARLITOSDB1;
-USE CARLITOSDB1;
+CREATE DATABASE CARLITOSDB;
+USE CARLITOSDB;
 
 -- Criação das tabelas e seus relacionamentos
 create table funcionario(
