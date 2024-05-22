@@ -88,6 +88,70 @@ create table ingredientes_produto(
 	constraint fk_ingredientes_codigo foreign key (codigo_ingrediente) references ingredientes(codigo) on delete cascade
 );
 
+-- Criação de Triggers
+delimiter $$
+create trigger tr_before_insert_atendentes
+before insert on atendentes
+for each row 
+begin
+	declare cpf_exists_gerente int;
+	declare cpf_exists_motoqueiro int;
+
+	select count(*) into cpf_exists_gerente
+	from gerente g where g.cpf = new.cpf;
+	
+	select count(*) into cpf_exists_motoqueiro
+	from motoqueiro m where m.cpf = new.cpf;
+	
+	if cpf_exists_gerente > 0 or cpf_exists_motoqueiro > 0 then
+	signal sqlstate '45000'
+	set MESSAGE_TEXT = 'Erro: O CPF já está cadastrado como gerente ou como motoqueiro';
+	end if;
+end $$
+delimiter ;
+
+delimiter $$
+create trigger tr_before_insert_gerente
+before insert on gerente
+for each row 
+begin
+	declare cpf_exists_atendentes int;
+	declare cpf_exists_motoqueiro int;
+
+	select count(*) into cpf_exists_atendentes
+	from atendentes a where a.cpf = new.cpf;
+	
+	select count(*) into cpf_exists_motoqueiro
+	from motoqueiro m where m.cpf = new.cpf;
+	
+	if cpf_exists_atendentes > 0 or cpf_exists_motoqueiro > 0 then
+	signal sqlstate '45000'
+	set MESSAGE_TEXT = 'Erro: O CPF já está cadastrado como atendente ou como motoqueiro';
+	end if;
+end $$
+delimiter ;
+
+delimiter $$
+create trigger tr_before_insert_motoqueiro
+before insert on motoqueiro
+for each row 
+begin
+	declare cpf_exists_gerente int;
+	declare cpf_exists_atendentes int;
+
+	select count(*) into cpf_exists_gerente
+	from gerente g where g.cpf = new.cpf;
+	
+	select count(*) into cpf_exists_atendentes
+	from atendentes a where a.cpf = new.cpf;
+	
+	if cpf_exists_gerente > 0 or cpf_exists_atendentes > 0 then
+	signal sqlstate '45000'
+	set MESSAGE_TEXT = 'Erro: O CPF já está cadastrado como gerente ou como atendente';
+	end if;
+end $$
+delimiter ;
+
 -- Povoamento da tabela funcionario
 INSERT INTO funcionario (cpf, nome, salario) VALUES
 ('111.222.333-44', 'João Silva', 2500.00),
@@ -181,6 +245,3 @@ INSERT INTO ingredientes_produto (produto_id, codigo_ingrediente) VALUES
 (5, 8), -- Coca-Cola: Coca-Cola Lata
 (6, 9), -- Batata Frita: Batata Pré-Frita
 (7, 10); -- Sundae: Sorvete de Creme
-
-
-
