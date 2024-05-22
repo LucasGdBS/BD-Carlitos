@@ -1,6 +1,5 @@
 package lcg.bdcarlitos.repositories;
 
-
 import lcg.bdcarlitos.entities.Ingrediente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;

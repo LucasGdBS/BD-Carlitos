@@ -1,6 +1,5 @@
 package lcg.bdcarlitos.services;
 
-import lcg.bdcarlitos.entities.Funcionario;
 import lcg.bdcarlitos.entities.Ingrediente;
 import lcg.bdcarlitos.repositories.IngredienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +38,7 @@ public class IngredienteService {
                     ingrediente.setNome(ingredienteExistente.getNome());
                 if (ingrediente.getDtValidade() == null || ingrediente.getDtValidade().isBlank())
                     ingrediente.setDtValidade(ingredienteExistente.getDtValidade());
-                if (ingrediente.getQuantidade() == 0){ingrediente.setDtValidade(ingredienteExistente.getDtValidade());}
+                if (ingrediente.getQuantidade() == 0){ingrediente.setQuantidade(ingredienteExistente.getQuantidade());}
                 ingrediente.setCodigo(ingredienteExistente.getCodigo());
                 return ingredienteRepository.updateById(codigo, ingrediente);
             }

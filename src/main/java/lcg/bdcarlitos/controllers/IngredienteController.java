@@ -1,6 +1,5 @@
 package lcg.bdcarlitos.controllers;
 
-import lcg.bdcarlitos.entities.Funcionario;
 import lcg.bdcarlitos.entities.Ingrediente;
 import lcg.bdcarlitos.services.IngredienteService;
 import org.springframework.beans.factory.annotation.Autowired;

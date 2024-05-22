@@ -1,7 +1,5 @@
 package lcg.bdcarlitos.controllers;
 
-
-
 import lcg.bdcarlitos.entities.Cliente;
 import lcg.bdcarlitos.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
