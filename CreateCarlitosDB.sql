@@ -48,6 +48,7 @@ create table clientes(
 create table produto(
 	id_produto int AUTO_INCREMENT,
 	nome varchar(200),
+	preco decimal(10, 2),
 	constraint produto_pk primary key (id_produto)
 );
 
@@ -187,17 +188,17 @@ INSERT INTO clientes (telefone, cep, rua, bairro, numero, complemento, nome) VAL
 ('5555-4444', '87654-321', 'Avenida dos Coqueiros', 'Praia', '654', 'Casa 02', 'Paulo Rocha');
 
 -- Povoamento da tabela produto
-INSERT INTO produto (nome) VALUES
-('Hamburguer Artesanal'),
-('X-Bacon'),
-('X-Salada'),
-('X-Egg'),
-('Coca-Cola'),
-('Batata Frita'),
-('Sundae'),
-('Água Mineral'),
-('Cheeseburguer'),
-('Milk Shake');
+INSERT INTO produto (nome, preco) VALUES
+('Hamburguer Artesanal', 25.00),
+('X-Bacon', 20.00),
+('X-Salada', 18.00),
+('X-Egg', 22.00),
+('Coca-Cola', 5.00),
+('Batata Frita', 10.00),
+('Sundae', 8.00),
+('Água Mineral', 3.00),
+('Cheeseburguer', 15.00),
+('Milk Shake', 12.00);
 
 -- Povoamento da tabela pedido
 INSERT INTO pedido (codigo_nota_fiscal, valor_total, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto, num_pedido, telefone_cliente, produto_id, atendente_cpf) VALUES
