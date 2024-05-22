@@ -1,6 +1,6 @@
 -- SCRIPT CRIAÇÃO
-CREATE DATABASE CARLITOSDB;
-USE CARLITOSDB;
+CREATE DATABASE CARLITOSDB1;
+USE CARLITOSDB1;
 
 -- Criação das tabelas e seus relacionamentos
 create table funcionario(
@@ -46,7 +46,7 @@ create table clientes(
 );
 
 create table produto(
-	id_produto int,
+	id_produto int AUTO_INCREMENT,
 	nome varchar(200),
 	constraint produto_pk primary key (id_produto)
 );
@@ -172,13 +172,11 @@ INSERT INTO atendentes (cpf, gerente, turno) VALUES
 ('333.444.555-66', '111.222.333-44', 'MANHÃ'),
 ('444.555.666-77', '111.222.333-44', 'NOITE'),
 ('555.666.777-88', '222.333.444-55', 'MANHÃ'),
-('666.777.888-99', '222.333.444-55', 'NOITE'),
-('777.888.999-00', '222.333.444-55', 'MANHÃ');
+('666.777.888-99', '222.333.444-55', 'NOITE');
 
 -- Povoamento da tabela motoqueiro
 INSERT INTO motoqueiro (cpf, gerente_motoqueiro) VALUES
-('777.888.999-00', NULL),
-('111.222.333-44', '777.888.999-00');
+('777.888.999-00', NULL);
 
 -- Povoamento da tabela clientes
 INSERT INTO clientes (telefone, cep, rua, bairro, numero, complemento, nome) VALUES
@@ -189,24 +187,23 @@ INSERT INTO clientes (telefone, cep, rua, bairro, numero, complemento, nome) VAL
 ('5555-4444', '87654-321', 'Avenida dos Coqueiros', 'Praia', '654', 'Casa 02', 'Paulo Rocha');
 
 -- Povoamento da tabela produto
-INSERT INTO produto (id_produto, nome) VALUES
-(1, 'Hamburguer Artesanal'),
-(2, 'X-Bacon'),
-(3, 'X-Salada'),
-(4, 'X-Egg'),
-(5, 'Coca-Cola'),
-(6, 'Batata Frita'),
-(7, 'Sundae'),
-(8, 'Água Mineral'),
-(9, 'Cheeseburguer'),
-(10, 'Milk Shake');
+INSERT INTO produto (nome) VALUES
+('Hamburguer Artesanal'),
+('X-Bacon'),
+('X-Salada'),
+('X-Egg'),
+('Coca-Cola'),
+('Batata Frita'),
+('Sundae'),
+('Água Mineral'),
+('Cheeseburguer'),
+('Milk Shake');
 
 -- Povoamento da tabela pedido
 INSERT INTO pedido (codigo_nota_fiscal, valor_total, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto, num_pedido, telefone_cliente, produto_id, atendente_cpf) VALUES
 (123456, 25.90, '2024-05-14', 'Cartão de Crédito', 5.00, 0.00, 2, 1, '9999-8888', 1, '333.444.555-66'),
 (234567, 18.50, '2024-05-14', 'Dinheiro', 3.00, 0.00, 1, 2, '8888-7777', 2, '444.555.666-77'),
 (345678, 22.70, '2024-05-14', 'Cartão de Débito', 4.00, 0.00, 3, 3, '7777-6666', 3, '555.666.777-88'),
-(456789, 10.00, '2024-05-14', 'Dinheiro', 2.00, 0.00, 1, 4, '6666-5555', 4, '777.888.999-00'),
 (567890, 6.50, '2024-05-14', 'Dinheiro', 1.50, 0.00, 1, 5, '5555-4444', 5, '666.777.888-99');
 
 -- Povoamento da tabela ingredientes
