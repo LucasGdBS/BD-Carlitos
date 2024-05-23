@@ -26,7 +26,10 @@ public class ClienteService {
         if (cliente.getBairro().isBlank()) { throw new RuntimeException("Campo Bairro vazio"); }
         if (cliente.getNumero() == 0) { throw new RuntimeException("Campo Numero vazio"); }
         if (cliente.getCep().isBlank()) { throw new RuntimeException("Campo CEP vazio"); }
-        return clienteRepository.create(cliente);
+        Cliente clienteCriado = clienteRepository.create(cliente);
+        clienteCriado.setId_cliente(getAll().getLast().getId_cliente());
+
+        return clienteCriado;
     }
 
     public List<Cliente> findByName(String name){
@@ -47,6 +50,7 @@ public class ClienteService {
                 if (cliente.getComplemento() == null || cliente.getComplemento().isBlank()) { cliente.setComplemento(clienteExistente.getComplemento()); }
                 if (cliente.getNumero() == 0){cliente.setNumero(clienteExistente.getNumero());}
                 if (cliente.getCep() == null || cliente.getCep().isBlank()) { cliente.setCep(clienteExistente.getCep()); }
+                cliente.setId_cliente(clienteExistente.getId_cliente());
                 return clienteRepository.updateByPhone(phone, cliente);
             }else{
                 return null;
@@ -56,12 +60,12 @@ public class ClienteService {
         }
     }
 
-    public void delete(String phone){
-        Cliente clienteExistente = clienteRepository.findByPhone(phone);
+    public void delete(int id){
+        Cliente clienteExistente = clienteRepository.findById(id);
         if (clienteExistente == null){
             throw new RuntimeException("Cliente não encontrado");
         }
-        clienteRepository.deleteCliente(phone);
+        clienteRepository.deleteCliente(id);
     }
 
 }

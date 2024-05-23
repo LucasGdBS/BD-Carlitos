@@ -41,9 +41,8 @@ public class ClienteRepository {
 
     public Cliente create(Cliente cliente) {
         try {
-            String sql = "INSERT INTO Cliente(id_cliente, nome, telefone_1, telefone_2, complemento, rua, bairro, numero, cep) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO clientes(nome, telefone_1, telefone_2, complemento, rua, bairro, numero, cep) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             jdbcTemplate.update(sql,
-                    cliente.getId_cliente(),
                     cliente.getNome(),
                     cliente.getTelefone_1(),
                     cliente.getTelefone_2(),
@@ -68,11 +67,11 @@ public class ClienteRepository {
         }
     }
 
-    public Cliente findByPhone(String Phone) {
+    public Cliente findByPhone(String phone) {
         try {
             String sql = "select * from Clientes where (telefone_1 like ?) or (telefone_2 like ?) ";
 
-            return jdbcTemplate.queryForObject(sql, rowMapper, "%" + Phone + "%");
+            return jdbcTemplate.queryForObject(sql, rowMapper, "%" + phone + "%", "%" + phone + "%");
         } catch (DataAccessException e) {
             throw new RuntimeException(e.getCause());
         }
@@ -80,15 +79,17 @@ public class ClienteRepository {
 
     public Cliente updateByPhone(String telefone, Cliente cliente) {
         try {
-            String sql = "UPDATE Clientes SET nome = ?, complemento = ?, rua = ?, bairro = ?, numero = ?, cep = ? WHERE telefone = ?";
+            String sql = "UPDATE Clientes SET nome = ?, complemento = ?, rua = ?, bairro = ?, numero = ?, cep = ? " +
+                    "WHERE telefone_1 = ? or telefone_2 = ?";
             jdbcTemplate.update(sql,
                     cliente.getNome(),
-                    telefone,
                     cliente.getComplemento(),
                     cliente.getRua(),
                     cliente.getBairro(),
                     cliente.getNumero(),
-                    cliente.getCep()
+                    cliente.getCep(),
+                    telefone,
+                    telefone
             );
             return cliente;
         } catch (DataAccessException e) {
@@ -96,9 +97,18 @@ public class ClienteRepository {
         }
     }
 
-    public void deleteCliente(String telefone) {
-        String sql = "delete from Clientes where telefone = ?";
-        jdbcTemplate.update(sql, telefone);
+    public Cliente findById(int id) {
+        try {
+            String sql = "select * from Clientes where id_cliente = ?";
+            return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        } catch (DataAccessException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public void deleteCliente(int id) {
+        String sql = "delete from clientes where id_cliente = ?";
+        jdbcTemplate.update(sql, id);
     }
 
 }

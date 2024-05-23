@@ -71,10 +71,10 @@ public class ClienteController {
 
     }
 
-    @DeleteMapping("/{telefone}")
-    public ResponseEntity<?> deleteCliente(@PathVariable String telefone){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteCliente(@PathVariable int id){
         try{
-            clienteService.delete(telefone);
+            clienteService.delete(id);
             return new ResponseEntity<>("Cliente deletado", HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
