@@ -67,8 +67,8 @@ create table pedido(
 	produto_id int,
 	atendente_cpf varchar(15),
 	constraint pedido_pk primary key (num_pedido, id_cliente, produto_id),
-	constraint fk_clientes_telefone foreign key (id_cliente) references clientes(id_cliente) on delete set null,
-	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto) on delete set null,
+	constraint fk_clientes_telefone foreign key (id_cliente) references clientes(id_cliente) on delete cascade,
+	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto) on delete cascade,
 	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf) on delete set null
 );
 
@@ -94,17 +94,17 @@ create table ingredientes_produto(
 delimiter $$
 create trigger tr_before_insert_atendentes
 before insert on atendentes
-for each row 
+for each row
 begin
 	declare cpf_exists_gerente int;
 	declare cpf_exists_motoqueiro int;
 
 	select count(*) into cpf_exists_gerente
 	from gerente g where g.cpf = new.cpf;
-	
+
 	select count(*) into cpf_exists_motoqueiro
 	from motoqueiro m where m.cpf = new.cpf;
-	
+
 	if cpf_exists_gerente > 0 or cpf_exists_motoqueiro > 0 then
 	signal sqlstate '45000'
 	set MESSAGE_TEXT = 'Erro: O CPF já está cadastrado como gerente ou como motoqueiro';
@@ -115,17 +115,17 @@ delimiter ;
 delimiter $$
 create trigger tr_before_insert_gerente
 before insert on gerente
-for each row 
+for each row
 begin
 	declare cpf_exists_atendentes int;
 	declare cpf_exists_motoqueiro int;
 
 	select count(*) into cpf_exists_atendentes
 	from atendentes a where a.cpf = new.cpf;
-	
+
 	select count(*) into cpf_exists_motoqueiro
 	from motoqueiro m where m.cpf = new.cpf;
-	
+
 	if cpf_exists_atendentes > 0 or cpf_exists_motoqueiro > 0 then
 	signal sqlstate '45000'
 	set MESSAGE_TEXT = 'Erro: O CPF já está cadastrado como atendente ou como motoqueiro';
@@ -136,17 +136,17 @@ delimiter ;
 delimiter $$
 create trigger tr_before_insert_motoqueiro
 before insert on motoqueiro
-for each row 
+for each row
 begin
 	declare cpf_exists_gerente int;
 	declare cpf_exists_atendentes int;
 
 	select count(*) into cpf_exists_gerente
 	from gerente g where g.cpf = new.cpf;
-	
+
 	select count(*) into cpf_exists_atendentes
 	from atendentes a where a.cpf = new.cpf;
-	
+
 	if cpf_exists_gerente > 0 or cpf_exists_atendentes > 0 then
 	signal sqlstate '45000'
 	set MESSAGE_TEXT = 'Erro: O CPF já está cadastrado como gerente ou como atendente';
