@@ -66,10 +66,10 @@ create table pedido(
 	id_cliente int,
 	produto_id int,
 	atendente_cpf varchar(15),
-	constraint pedido_pk primary key (num_pedido, id_cliente, produto_id, atendente_cpf),
-	constraint fk_clientes_telefone foreign key (id_cliente) references clientes(id_cliente) on delete cascade,
-	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto) on delete cascade,
-	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf) on delete cascade
+	constraint pedido_pk primary key (num_pedido, id_cliente, produto_id),
+	constraint fk_clientes_telefone foreign key (id_cliente) references clientes(id_cliente) on delete set null,
+	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto) on delete set null,
+	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf) on delete set null
 );
 
 create table ingredientes(
