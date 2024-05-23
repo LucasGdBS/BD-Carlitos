@@ -1,12 +1,13 @@
 package lcg.bdcarlitos.controllers;
 
-import lcg.bdcarlitos.entities.Funcionario;
 import lcg.bdcarlitos.entities.Produto;
 import lcg.bdcarlitos.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @RestController
 @RequestMapping("/produtos")
@@ -51,7 +52,8 @@ public class ProdutoController {
     @PostMapping("/")
     public ResponseEntity<?> createProduto(@RequestBody Produto produto){
         try{
-            return new ResponseEntity<>(produtoService.create(produto), HttpStatus.CREATED);
+            System.out.println(Arrays.toString(produto.getIngredientes()));
+            return new ResponseEntity<>(produtoService.create(produto, produto.getIngredientes()), HttpStatus.CREATED);
         }
         catch (Exception e){
             return new ResponseEntity<>("Erro ao criar Produto: " + e.getMessage(),
@@ -78,6 +80,17 @@ public class ProdutoController {
         try{
             produtoService.delete(id);
             return new ResponseEntity<>("Produto deletado", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/buscar-ingredientes-produto")
+    public ResponseEntity<?> findIngredienteByProdutoId(@RequestParam int id){
+        try{
+            if(produtoService.findById(id) == null){ return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);}
+            return new ResponseEntity<>(produtoService.getIngredientesByProduto(id),
+                    HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }

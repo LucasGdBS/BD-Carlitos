@@ -4,6 +4,15 @@ public class Produto {
     private int id_produto;
     private String nome;
     private double preco;
+    private int[] ingredientes;
+
+    public int[] getIngredientes() {
+        return ingredientes;
+    }
+
+    public void setIngredientes(int[] ingredientes) {
+        this.ingredientes = ingredientes;
+    }
 
     public Produto() {
     }
