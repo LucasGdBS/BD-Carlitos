@@ -90,7 +90,53 @@ create table ingredientes_produto(
 	constraint fk_ingredientes_codigo foreign key (codigo_ingrediente) references ingredientes(codigo) on delete cascade
 );
 
+-- Tabela de Backup
+create table pedidos_bkup(
+    num_pedido int,
+    codigo_nota_fiscal int unique,
+    valor_pedido float,
+    desconto float,
+    qnt_produto int,
+    id_cliente int,
+    produto_id int,
+    produto_nome varchar(200),
+    atendente_cpf varchar(15)
+);
+
 -- Criação de Triggers
+
+delimiter $$
+create trigger tr_bkup_pedidos
+    before delete on produto
+    for each row
+begin
+    insert into pedidos_bkup (
+        num_pedido,
+        codigo_nota_fiscal,
+        valor_pedido,
+        desconto,
+        qnt_produto,
+        id_cliente,
+        produto_id,
+        produto_nome,
+        atendente_cpf
+    ) select
+        p.num_pedido,
+        p.codigo_nota_fiscal,
+        p.valor_total,  -- Supondo que valor_total é equivalente a valor_pedido
+        p.desconto,
+        p.qnt_produto,
+        p.id_cliente,
+        p.produto_id,
+        old.nome,  -- Nome do produto que está sendo deletado
+        p.atendente_cpf
+    from
+        pedido p
+    where
+        p.produto_id = old.id_produto;
+end $$
+delimiter ;
+
 delimiter $$
 create trigger tr_before_insert_atendentes
 before insert on atendentes
