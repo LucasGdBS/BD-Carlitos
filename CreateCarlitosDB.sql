@@ -105,7 +105,6 @@ create table dependentes(
 create table pedidos_bkup(
     num_pedido int,
     codigo_nota_fiscal int unique,
-    valor_pedido float,
     desconto float,
     qnt_produto int,
     id_cliente int,
@@ -116,6 +115,41 @@ create table pedidos_bkup(
 
 -- Criação de Triggers
 delimiter $$
+create trigger tr_retirada_ingredientes
+before insert on pedido
+for each row
+begin
+    declare done int default false;
+    declare ingredientes_codigo int; -- Declare a variável para armazenar o código do ingrediente
+    declare cur cursor for
+        select i.codigo from ingredientes i
+        join ingredientes_produto ip on i.codigo = ip.codigo_ingrediente
+        where ip.produto_id = new.produto_id;
+
+    declare continue handler for not found set done = true;
+
+    open cur;
+    read_loop: loop
+        fetch cur into ingredientes_codigo;
+        if done then
+            leave read_loop;
+        end if;
+
+        -- Atualize a quantidade de ingredientes
+        update ingredientes i
+        join ingredientes_produto ip on i.codigo = ip.codigo_ingrediente
+        set i.quantidade = i.quantidade - 1
+        where ip.produto_id = new.produto_id;
+
+        -- Saia do loop após atualizar apenas um ingrediente
+        set done = true;
+    end loop read_loop;
+
+    close cur;
+end $$
+delimiter ;
+
+delimiter $$
 create trigger tr_bkup_pedidos
     before delete on produto
     for each row
@@ -123,7 +157,6 @@ begin
     insert into pedidos_bkup (
         num_pedido,
         codigo_nota_fiscal,
-        valor_pedido,
         desconto,
         qnt_produto,
         id_cliente,
@@ -133,7 +166,6 @@ begin
     ) select
         p.num_pedido,
         p.codigo_nota_fiscal,
-        p.valor_total,  -- Supondo que valor_total é equivalente a valor_pedido
         p.desconto,
         p.qnt_produto,
         p.id_cliente,
@@ -393,4 +425,3 @@ insert into dependentes (nome, data_nascimento, relacao, cpf_funcionario) values
 ('Ricardo Lima', '2012-04-04', 'Filho', '44444444444');
 
 -- Povoamento da tabela pedidos_bkup - Inicialmente vazia, será preenchida pela trigger quando houver exclusão em pedido
-
