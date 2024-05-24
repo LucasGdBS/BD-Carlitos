@@ -55,7 +55,7 @@ create table produto(
 );
 
 create table pedido(
-	codigo_nota_fiscal int unique,
+	codigo_nota_fiscal int,
 	valor_total float,
 	dt_pedido date,
 	forma_pagamento varchar(100),
@@ -69,7 +69,8 @@ create table pedido(
 	constraint pedido_pk primary key (num_pedido, id_cliente, produto_id),
 	constraint fk_clientes_telefone foreign key (id_cliente) references clientes(id_cliente) on delete cascade,
 	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto) on delete cascade,
-	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf) on delete set null
+	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf) on delete set null,
+	constraint forma_pagamento_ck check (forma_pagamento in ('crédito', 'débito', 'dinheiro', 'pix'))
 );
 
 create table ingredientes(
@@ -88,6 +89,17 @@ create table ingredientes_produto(
 	constraint pk_ingredietes_produto primary key (produto_id, codigo_ingrediente),
 	constraint fk_produto_id_produto2 foreign key (produto_id) references produto(id_produto) on delete cascade,
 	constraint fk_ingredientes_codigo foreign key (codigo_ingrediente) references ingredientes(codigo) on delete cascade
+);
+
+create table dependentes(
+    id_dependente int auto_increment,
+    nome varchar(100) NOT NULL,
+    data_nascimento date,
+    relacao varchar(50),  -- Filho, Cônjuge, Progenitores
+    cpf_funcionario varchar(15),
+    constraint dependente_pk primary key (id_dependente, cpf_funcionario),
+    constraint fk_funcionario_cpf3 foreign key (cpf_funcionario) references funcionario(cpf) on delete cascade,
+    CONSTRAINT relacao_ck CHECK (relacao IN ('Filho', 'Conjuge', 'Progenitores'))
 );
 
 -- Tabela de Backup
@@ -291,3 +303,99 @@ INSERT INTO ingredientes_produto (produto_id, codigo_ingrediente) VALUES
 (6, 9), -- Batata Frita: Batata Pré-Frita
 (7, 10); -- Sundae: Sorvete de Creme
 
+-- Clientes por bairro
+select bairro, count(*) as quantidade_clientes
+from clientes c
+group by bairro
+order by quantidade_clientes desc;
+
+-- Lista de produtos mais vendidos em ordem decrescente
+select p2.nome as produto, sum(p.qnt_produto) as quantidade_vendida
+from pedido p
+join produto p2 on p.produto_id = p2.id_produto
+group by p2.nome
+order by quantidade_vendida desc;
+
+-- Faturamento diario, mensal, anual
+select  dt_pedido as data, sum(valor_total) as faturamento_diario
+from pedido
+group by dt_pedido
+order by dt_pedido;
+
+select date_format(dt_pedido, '%Y-%m') as mes, sum(valor_total) as faturamento_mensal
+from pedido
+group by date_format(dt_pedido, '%Y-%m')
+order by mes;
+
+select year(dt_pedido) as ano, sum(valor_total) as faturamento_anual
+from pedido
+group by year(dt_pedido)
+order by ano;
+
+-- Forma de pagamento mais utilizadas
+select p.forma_pagamento, count(*) as quantidade_utilizacao
+from pedido p
+group by forma_pagamento
+order by quantidade_utilizacao desc;
+
+-- Lista de atendentes com maior numero de vendas
+select a.cpf, f.nome, count(p.num_pedido) as numero_de_vendas
+from pedido p
+join atendentes a on p.atendente_cpf = a.cpf
+join funcionario f on a.cpf = f.cpf
+group by a.cpf, f.nome
+order by numero_de_vendas DESC;
+
+-- Quantidade de pedidos feitos por atendentes da noite/atendentes da manhã
+select a.turno, count(p.num_pedido) as quantidade_pedidos
+from pedido p
+join atendentes a on p.atendente_cpf = a.cpf
+group by a.turno;
+
+-- Funcionarios com salarios a cima da media
+select nome, salario
+from funcionario
+where salario > (
+    select avg(salario)
+    from funcionario
+);
+
+-- Produtos que possuem mais de 3 igredientes
+select nome
+from produto
+where id_produto in (
+    select produto_id
+    from ingredientes_produto
+    group by produto_id
+    having count(*) > 3
+);
+
+-- Ingredientes que estão proximos ao vencimento ( 1 semana )
+select nome, dt_validade 
+from ingredientes
+where datediff(dt_validade, CURDATE()) < 7;
+
+-- Ingredientes Mais Utilizados nos 5 Produtos mais vendidos 
+select i.nome as ingrediente, count(*) as quantidade_utilizacao
+from ingredientes_produto ip
+join ingredientes i on ip.codigo_ingrediente = i.codigo
+where ip.produto_id in (
+    select produto_id
+    from (
+        select produto_id, sum(qnt_produto) as total_vendido
+        from pedido
+        group by produto_id
+        order by total_vendido desc
+        limit 5
+    ) as produtos_mais_vendidos
+)
+group by i.nome
+order by quantidade_utilizacao desc;
+
+-- Selecionar o valor de um pedido especifico
+select num_pedido, sum(preco * qnt_produto) as valor_total_produtos
+from pedido
+join produto on pedido.produto_id = produto.id_produto
+where pedido.num_pedido = 2
+group by num_pedido
+order by num_pedido;
