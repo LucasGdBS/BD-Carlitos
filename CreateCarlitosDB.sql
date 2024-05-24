@@ -55,8 +55,7 @@ create table produto(
 );
 
 create table pedido(
-	codigo_nota_fiscal int,
-	valor_total float,
+	codigo_nota_fiscal int not null,
 	dt_pedido date,
 	forma_pagamento varchar(100),
 	taxa_entrega float,
@@ -116,7 +115,6 @@ create table pedidos_bkup(
 );
 
 -- Criação de Triggers
-
 delimiter $$
 create trigger tr_bkup_pedidos
     before delete on produto
@@ -212,6 +210,22 @@ begin
 end $$
 delimiter ;
 
+-- Criação de views
+create view view_detalhes_pedido as
+SELECT 
+    p.*, 
+    c.nome as nome_cliente, 
+    p2.nome as nome_produto,
+    ((qnt_produto * p2.preco + p.taxa_entrega) * (p.desconto/100)) AS valor_desconto,
+    (qnt_produto * p2.preco + p.taxa_entrega) as valor_sem_desconto,
+    (qnt_produto * p2.preco + p.taxa_entrega - ((qnt_produto * p2.preco + p.taxa_entrega) * (p.desconto/100))) as valor_total
+FROM 
+    pedido p
+JOIN 
+    clientes c ON c.id_cliente = p.id_cliente
+JOIN 
+    produto p2 ON p2.id_produto = p.produto_id;
+
 -- Povoamento da tabela funcionario
 INSERT INTO funcionario (cpf, nome, salario) VALUES
 ('111.222.333-44', 'João Silva', 2500.00),
@@ -260,11 +274,11 @@ INSERT INTO produto (nome, preco) VALUES
 ('Milk Shake', 12.00);
 
 -- Povoamento da tabela pedido
-INSERT INTO pedido (codigo_nota_fiscal, valor_total, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto, num_pedido, id_cliente, produto_id, atendente_cpf) VALUES
-(123456, 25.90, '2024-05-14', 'Cartão de Crédito', 5.00, 0.00, 2, 1, 1, 1, '333.444.555-66'),
-(234567, 18.50, '2024-05-14', 'Dinheiro', 3.00, 0.00, 1, 2, 2, 2, '444.555.666-77'),
-(345678, 22.70, '2024-05-14', 'Cartão de Débito', 4.00, 0.00, 3, 3, 3, 3, '555.666.777-88'),
-(567890, 6.50, '2024-05-14', 'Dinheiro', 1.50, 0.00, 1, 5, 4, 5, '666.777.888-99');
+INSERT INTO pedido (codigo_nota_fiscal, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto, num_pedido, id_cliente, produto_id, atendente_cpf) VALUES
+(123456, '2024-05-14', 'Crédito', 5.00, 0.00, 2, 1, 1, 2, '333.444.555-66'),
+(234567, '2024-05-14', 'dinheiro', 3.00, 0.00, 1, 2, 2, 2, '444.555.666-77'),
+(345678, '2024-05-14', 'débito', 4.00, 0.00, 3, 3, 3, 3, '555.666.777-88'),
+(567890, '2024-05-14', 'pix', 1.50, 0.00, 1, 5, 4, 5, '666.777.888-99');
 
 -- Povoamento da tabela ingredientes
 INSERT INTO ingredientes (nome, dt_validade, quantidade, codigo, tipo_alimento) VALUES
