@@ -114,6 +114,19 @@ create table pedidos_bkup(
 );
 
 -- Criação de Triggers
+
+delimiter $$
+create trigger tr_bloqueio_pedido_por_falta_de_ingredientes
+before update on ingredientes
+for each row 
+begin 
+	if new.quantidade < 0 then
+	signal sqlstate '45000'
+	set MESSAGE_TEXT = 'Erro: Ingredientes para este pedido faltando!';
+	end if;
+end $$
+delimiter ;
+
 delimiter $$
 create trigger tr_retirada_ingredientes
 before insert on pedido
@@ -122,7 +135,8 @@ begin
     declare done int default false;
     declare ingredientes_codigo int; -- Declare a variável para armazenar o código do ingrediente
     declare cur cursor for
-        select i.codigo from ingredientes i
+        select distinct i.codigo 
+        from ingredientes i
         join ingredientes_produto ip on i.codigo = ip.codigo_ingrediente
         where ip.produto_id = new.produto_id;
 
@@ -135,19 +149,20 @@ begin
             leave read_loop;
         end if;
 
-        -- Atualize a quantidade de ingredientes
+        -- Atualize a quantidade de ingredientes apenas para os relacionados ao produto no novo pedido
         update ingredientes i
         join ingredientes_produto ip on i.codigo = ip.codigo_ingrediente
-        set i.quantidade = i.quantidade - 1
-        where ip.produto_id = new.produto_id;
+        set i.quantidade = i.quantidade - new.qnt_produto
+        where ip.produto_id = new.produto_id
+        and i.codigo = ingredientes_codigo; -- Adicionando esta condição para garantir que apenas o ingrediente atual seja atualizado
 
         -- Saia do loop após atualizar apenas um ingrediente
-        set done = true;
     end loop read_loop;
 
     close cur;
 end $$
 delimiter ;
+
 
 delimiter $$
 create trigger tr_bkup_pedidos
