@@ -66,7 +66,7 @@ create table pedido(
 	produto_id int,
 	atendente_cpf varchar(15),
 	constraint pedido_pk primary key (num_pedido, id_cliente, produto_id),
-	constraint fk_clientes_telefone foreign key (id_cliente) references clientes(id_cliente) on delete cascade,
+	constraint fk_clientes_id foreign key (id_cliente) references clientes(id_cliente) on delete cascade,
 	constraint fk_produto_id_produto foreign key (produto_id) references produto(id_produto) on delete cascade,
 	constraint fk_atendentes_fk_funcionario foreign key (atendente_cpf) references atendentes(cpf) on delete set null,
 	constraint forma_pagamento_ck check (forma_pagamento in ('crédito', 'débito', 'dinheiro', 'pix'))
@@ -226,190 +226,171 @@ JOIN
 JOIN 
     produto p2 ON p2.id_produto = p.produto_id;
 
+
 -- Povoamento da tabela funcionario
-INSERT INTO funcionario (cpf, nome, salario) VALUES
-('111.222.333-44', 'João Silva', 2500.00),
-('222.333.444-55', 'Maria Souza', 2800.00),
-('333.444.555-66', 'Pedro Oliveira', 2700.00),
-('444.555.666-77', 'Ana Santos', 2600.00),
-('555.666.777-88', 'Lucas Pereira', 2900.00),
-('666.777.888-99', 'Carlos Ferreira', 2700.00),
-('777.888.999-00', 'Amanda Costa', 2600.00);;
+insert into funcionario (cpf, nome, salario) values 
+('11111111111', 'Ana Silva', 3500.00),
+('22222222222', 'Bruno Costa', 4200.00),
+('33333333333', 'Carlos Souza', 3000.00),
+('44444444444', 'Diana Lima', 2800.00),
+('55555555555', 'Eduardo Pereira', 4500.00),
+('66666666666', 'Fernanda Oliveira', 3200.00),
+('77777777777', 'Gabriel Santos', 3100.00),
+('88888888888', 'Helena Almeida', 3400.00),
+('99999999999', 'Igor Martins', 3300.00),
+('10101010101', 'Julia Rodrigues', 2900.00),
+('11121212121', 'Luis Castro', 3700.00),
+('12131415161', 'Mariana Silva', 3600.00),
+('13131415161', 'Nina Nascimento', 3800.00),
+('14151617181', 'Otavio Costa', 2700.00),
+('15161718191', 'Paula Moura', 4000.00);
 
 -- Povoamento da tabela gerente
-INSERT INTO gerente (cpf) VALUES
-('111.222.333-44'),
-('222.333.444-55');
+insert into gerente (cpf) values 
+('11111111111'),
+('22222222222'),
+('66666666666');
 
 -- Povoamento da tabela atendentes
-INSERT INTO atendentes (cpf, gerente, turno) VALUES
-('333.444.555-66', '111.222.333-44', 'MANHÃ'),
-('444.555.666-77', '111.222.333-44', 'NOITE'),
-('555.666.777-88', '222.333.444-55', 'MANHÃ'),
-('666.777.888-99', '222.333.444-55', 'NOITE');
+insert into atendentes (cpf, gerente, turno) values 
+('33333333333', '11111111111', 'MANHÃ'),
+('44444444444', '22222222222', 'NOITE'),
+('77777777777', '11111111111', 'MANHÃ'),
+('88888888888', '22222222222', 'NOITE'),
+('10101010101', '66666666666', 'MANHÃ');
 
 -- Povoamento da tabela motoqueiro
-INSERT INTO motoqueiro (cpf, gerente_motoqueiro) VALUES
-('777.888.999-00', NULL);
+insert into motoqueiro (cpf, gerente_motoqueiro) values 
+('55555555555', null),
+('99999999999', '55555555555'),
+('11121212121', '55555555555');
 
 -- Povoamento da tabela clientes
-INSERT INTO clientes (telefone_1, telefone_2, cep, rua, bairro, numero, complemento, nome) VALUES
-('9999-8888', '12345-678', '01001-000', 'Rua das Flores', 'Centro', '123', 'Apto 101', 'Carlos Alberto'),
-('8888-7777', '54321-876', '01002-000', 'Avenida Principal', 'Bairro Novo', '456', '', 'Mariana Souza'),
-('7777-6666', '98765-432', '01003-000', 'Rua do Comércio', 'Centro', '789', 'Loja 03', 'José da Silva'),
-('6666-5555', '23456-789', '01004-000', 'Rua dos Girassóis', 'Jardim', '321', '', 'Amanda Oliveira'),
-('5555-4444', '87654-321', '01005-000', 'Avenida dos Coqueiros', 'Praia', '654', 'Casa 02', 'Paulo Rocha');
+insert into clientes (telefone_1, telefone_2, cep, rua, bairro, numero, complemento, nome) values 
+('999999999', '888888888', '52041-000', 'Rua da Aurora', 'Boa Vista', '100', 'Apto 101', 'Alice Ferreira'),
+('777777777', '666666666', '52021-000', 'Avenida Conde da Boa Vista', 'Boa Vista', '200', 'Casa', 'Carlos Mendes'),
+('555555555', '444444444', '52050-000', 'Rua do Hospício', 'Boa Vista', '300', 'Apto 201', 'Bianca Oliveira'),
+('333333333', '222222222', '52011-000', 'Rua Amélia', 'Graças', '400', 'Casa', 'David Moreira'),
+('111111111', '000000000', '52051-000', 'Avenida Rui Barbosa', 'Graças', '500', 'Apto 301', 'Eva Gomes'),
+('212121212', '343434343', '52061-000', 'Rua da Hora', 'Espinheiro', '600', 'Casa', 'Felipe Silva'),
+('454545454', '565656565', '52070-000', 'Rua do Espinheiro', 'Espinheiro', '700', 'Apto 401', 'Gabriela Santos'),
+('676767676', '787878787', '52060-000', 'Avenida Norte', 'Rosarinho', '800', 'Casa', 'Henrique Rocha'),
+('898989898', '909090909', '52080-000', 'Rua do Futuro', 'Aflitos', '900', 'Apto 501', 'Isabela Costa'),
+('101010101', '121212121', '52031-000', 'Rua do Lima', 'Santo Amaro', '1100', 'Apto 601', 'Lara Fernandes'),
+('3434343434', '4545454545', '52041-000', 'Rua da Aurora', 'Boa Vista', '1200', 'Casa', 'Marcelo Vieira'),
+('5656565656', '6767676767', '52021-000', 'Avenida Conde da Boa Vista', 'Boa Vista', '1300', 'Apto 701', 'Renata Carvalho'),
+('7878787878', '8989898989', '52050-000', 'Rua do Hospício', 'Boa Vista', '1400', 'Casa', 'Sofia Araújo'),
+('9090909090', '1010101010', '52011-000', 'Rua Amélia', 'Graças', '1500', 'Apto 801', 'Mateus Ribeiro'),
+('1010101010', '1111111111', '52051-000', 'Avenida Rui Barbosa', 'Graças', '1600', 'Casa', 'Luiza Barbosa'),
+('1313131313', '1414141414', '52061-000', 'Rua da Hora', 'Espinheiro', '1700', 'Apto 901', 'Juliana Correia'),
+('1515151515', '1616161616', '52070-000', 'Rua do Espinheiro', 'Espinheiro', '1800', 'Casa', 'Pedro Martins'),
+('1717171717', '1818181818', '52060-000', 'Avenida Norte', 'Rosarinho', '1900', 'Apto 1001', 'Mariana Lopes'),
+('1919191919', '2020202020', '52080-000', 'Rua do Futuro', 'Aflitos', '2000', 'Casa', 'Felipe Almeida');
+
 
 -- Povoamento da tabela produto
-INSERT INTO produto (nome, preco) VALUES
-('Hamburguer Artesanal', 25.00),
-('X-Bacon', 20.00),
-('X-Salada', 18.00),
-('X-Egg', 22.00),
-('Coca-Cola', 5.00),
-('Batata Frita', 10.00),
-('Sundae', 8.00),
-('Água Mineral', 3.00),
-('Cheeseburguer', 15.00),
-('Milk Shake', 12.00);
-
--- Povoamento da tabela pedido
-INSERT INTO pedido (codigo_nota_fiscal, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto, num_pedido, id_cliente, produto_id, atendente_cpf) VALUES
-(123456, '2024-05-14', 'Crédito', 5.00, 0.00, 2, 1, 1, 2, '333.444.555-66'),
-(234567, '2024-05-14', 'dinheiro', 3.00, 0.00, 1, 2, 2, 2, '444.555.666-77'),
-(345678, '2024-05-14', 'débito', 4.00, 0.00, 3, 3, 3, 3, '555.666.777-88'),
-(567890, '2024-05-14', 'pix', 1.50, 0.00, 1, 5, 4, 5, '666.777.888-99');
+insert into produto (nome, preco) values 
+('Cheeseburger', 15.00),
+('Hamburger', 12.00),
+('Bacon Burger', 18.00),
+('Veggie Burger', 14.00),
+('Double Cheeseburger', 20.00),
+('Chicken Burger', 17.00),
+('Fish Burger', 18.00),
+('Bacon Cheese Fries', 15.00),
+('Onion Rings', 10.00),
+('Chicken Nuggets', 12.00),
+('Caesar Salad', 14.00),
+('Milkshake Chocolate', 8.00),
+('Milkshake Morango', 8.00),
+('Milkshake Baunilha', 8.00),
+('Coca-Cola Lata', 5.00);
 
 -- Povoamento da tabela ingredientes
-INSERT INTO ingredientes (nome, dt_validade, quantidade, codigo, tipo_alimento) VALUES
-('Pão de Hambúrguer', '2024-06-01', 100, 1, 'Unitario'),
-('Alface', '2024-05-20', 50, 2, 'Porcionado'),
-('Tomate', '2024-05-18', 40, 3, 'Unitario'),
-('Queijo Cheddar', '2024-05-25', 30, 4, 'Fatiado'),
-('Bacon', '2024-05-22', 20, 5, 'Fatiado'),
-('Carne de Hambúrguer', '2024-05-30', 60, 6, 'Unitario'),
-('Molho Especial', '2024-05-25', 50, 7, 'Porcionado'),
-('Coca-Cola Lata', '2024-07-01', 100, 8, 'Unitario'),
-('Batata Pré-Frita', '2024-05-20', 30, 9, 'Unitario'),
-('Sorvete de Creme', '2024-06-10', 20, 10, 'Unitario');
+insert into ingredientes (nome, dt_validade, quantidade, tipo_alimento) values 
+('Pão', '2024-12-31', 100, 'Unitario'),
+('Carne', '2024-11-30', 50, 'Porcionado'),
+('Queijo', '2024-10-31', 200, 'Fatiado'),
+('Alface', '2024-09-30', 150, 'Unitario'),
+('Tomate', '2024-08-30', 150, 'Unitario'),
+('Pão Integral', '2024-12-31', 100, 'Unitario'),
+('Frango', '2024-11-30', 50, 'Porcionado'),
+('Peixe', '2024-10-31', 50, 'Porcionado'),
+('Bacon', '2024-12-31', 100, 'Fatiado'),
+('Batata', '2024-09-30', 200, 'Unitario'),
+('Cebola', '2024-09-30', 100, 'Unitario'),
+('Molho Caesar', '2024-08-30', 100, 'Unitario'),
+('Molho Chocolate', '2024-12-31', 50, 'Unitario'),
+('Morango', '2024-09-30', 100, 'Unitario'),
+('Baunilha', '2024-12-31', 50, 'Unitario'),
+('Refrigerante', '2025-01-31', 200, 'Unitario');
 
 -- Povoamento da tabela ingredientes_produto
-INSERT INTO ingredientes_produto (produto_id, codigo_ingrediente) VALUES
-(1, 1), -- Hamburguer Artesanal: Pão de Hambúrguer
-(1, 2), -- Hamburguer Artesanal: Alface
-(1, 3), -- Hamburguer Artesanal: Tomate
-(1, 6), -- Hamburguer Artesanal: Carne de Hambúrguer
-(2, 1), -- X-Bacon: Pão de Hambúrguer
-(2, 2), -- X-Bacon: Alface
-(2, 4), -- X-Bacon: Queijo Cheddar
-(2, 5), -- X-Bacon: Bacon
-(2, 6), -- X-Bacon: Carne de Hambúrguer
-(3, 1), -- X-Salada: Pão de Hambúrguer
-(3, 2), -- X-Salada: Alface
-(3, 3), -- X-Salada: Tomate
-(3, 6), -- X-Salada: Carne de Hambúrguer
-(4, 1), -- X-Egg: Pão de Hambúrguer
-(4, 2), -- X-Egg: Alface
-(4, 3), -- X-Egg: Tomate
-(4, 6), -- X-Egg: Carne de Hambúrguer
-(4, 10), -- X-Egg: Ovo
-(5, 8), -- Coca-Cola: Coca-Cola Lata
-(6, 9), -- Batata Frita: Batata Pré-Frita
-(7, 10); -- Sundae: Sorvete de Creme
+insert into ingredientes_produto (produto_id, codigo_ingrediente) values 
+(1, 1), -- Cheeseburger com Pão
+(1, 2), -- Cheeseburger com Carne
+(1, 3), -- Cheeseburger com Queijo
+(2, 1), -- Hamburger com Pão
+(2, 2), -- Hamburger com Carne
+(3, 1), -- Bacon Burger com Pão
+(3, 2), -- Bacon Burger com Carne
+(3, 3), -- Bacon Burger com Queijo
+(4, 1), -- Veggie Burger com Pão
+(4, 4), -- Veggie Burger com Alface
+(4, 5), -- Veggie Burger com Tomate
+(5, 1),  -- Double Cheeseburger com Pão
+(5, 2),  -- Double Cheeseburger com Carne
+(5, 3),  -- Double Cheeseburger com Queijo
+(5, 4),  -- Double Cheeseburger com Pão Integral
+(6, 1),  -- Chicken Burger com Pão
+(6, 8),  -- Chicken Burger com Frango
+(7, 1),  -- Fish Burger com Pão
+(7, 9),  -- Fish Burger com Peixe
+(8, 10),  -- Bacon Cheese Fries com Batata
+(8, 3),   -- Bacon Cheese Fries com Queijo
+(8, 11),  -- Bacon Cheese Fries com Bacon
+(9, 12),  -- Onion Rings com Cebola
+(10, 8),  -- Chicken Nuggets com Frango
+(11, 4),  -- Caesar Salad com Alface
+(11, 5),  -- Caesar Salad com Molho Caesar
+(12, 6),  -- Milkshake Chocolate com Molho Chocolate
+(13, 6),  -- Milkshake Morango com Molho Morango
+(14, 6),  -- Milkshake Baunilha com Molho Baunilha
+(15, 13);  -- Coca-Cola Lata com Refrigerante
 
--- Clientes por bairro
-select bairro, count(*) as quantidade_clientes
-from clientes c
-group by bairro
-order by quantidade_clientes desc;
+-- Povoamento da tabela pedido
+insert into pedido (codigo_nota_fiscal, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto, num_pedido, id_cliente, produto_id, atendente_cpf) values 
+(1001, '2022-01-24', 'crédito', 5.00, 10.00, 2, 1, 1, 1, '33333333333'),
+(1002, '2022-01-24', 'dinheiro', 7.00, 5.00, 1, 2, 2, 2, '44444444444'),
+(1003, '2023-01-24', 'pix', 4.00, 15.00, 3, 3, 3, 3, '77777777777'),
+(1004, '2023-02-24', 'débito', 6.00, 20.00, 1, 4, 4, 1, '88888888888'),
+(1005, '2022-02-24', 'crédito', 5.00, 10.00, 2, 5, 1, 1, '33333333333'),
+(1005, '2022-02-24', 'crédito', 5.00, 10.00, 1, 5, 1, 2, '33333333333'),
+(1006, '2022-03-25', 'dinheiro', 7.00, 5.00, 1, 6, 2, 3, '44444444444'),
+(1006, '2023-03-25', 'dinheiro', 7.00, 5.00, 1, 6, 2, 4, '44444444444'),
+(1007, '2023-03-26', 'pix', 4.00, 15.00, 2, 7, 3, 5, '77777777777'),
+(1007, '2023-03-26', 'pix', 4.00, 15.00, 1, 7, 3, 6, '77777777777'),
+(1008, '2023-04-27', 'débito', 6.00, 20.00, 1, 8, 4, 7, '88888888888'),
+(1008, '2023-04-27', 'débito', 6.00, 20.00, 1, 8, 4, 8, '88888888888'),
+(1009, '2022-05-28', 'crédito', 5.00, 10.00, 1, 9, 5, 9, '33333333333'),
+(1009, '2022-05-28', 'crédito', 5.00, 10.00, 1, 9, 5, 10, '33333333333'),
+(1010, '2024-05-29', 'dinheiro', 7.00, 5.00, 1, 10, 6, 11, '44444444444'),
+(1010, '2024-05-29', 'dinheiro', 7.00, 5.00, 1, 10, 6, 12, '44444444444'),
+(1011, '2024-06-30', 'pix', 4.00, 15.00, 2, 11, 7, 13, '77777777777'),
+(1011, '2024-06-30', 'pix', 4.00, 15.00, 1, 11, 7, 14, '77777777777'),
+(1012, '2023-05-31', 'débito', 6.00, 20.00, 1, 12, 8, 15, '88888888888'),
+(1012, '2022-05-31', 'débito', 6.00, 20.00, 1, 12, 8, 1, '88888888888'),
+(1013, '2022-01-01', 'crédito', 5.00, 10.00, 1, 13, 9, 2, '33333333333'),
+(1013, '2022-01-01', 'crédito', 5.00, 10.00, 1, 13, 9, 3, '33333333333'),
+(1014, '2024-02-02', 'dinheiro', 7.00, 5.00, 1, 14, 10, 4, '44444444444'),
+(1014, '2024-02-02', 'dinheiro', 7.00, 5.00, 1, 14, 10, 5, '44444444444');
 
--- Lista de produtos mais vendidos em ordem decrescente
-select p2.nome as produto, sum(p.qnt_produto) as quantidade_vendida
-from pedido p
-join produto p2 on p.produto_id = p2.id_produto
-group by p2.nome
-order by quantidade_vendida desc;
+-- Povoamento da tabela dependentes
+insert into dependentes (nome, data_nascimento, relacao, cpf_funcionario) values 
+('Mariana Silva', '2010-01-01', 'Filho', '11111111111'),
+('Paulo Lima', '2008-02-02', 'Conjuge', '22222222222'),
+('Fernanda Souza', '2015-03-03', 'Filho', '33333333333'),
+('Ricardo Lima', '2012-04-04', 'Filho', '44444444444');
 
--- Faturamento diario, mensal, anual
-select  dt_pedido as data, sum(valor_total) as faturamento_diario
-from pedido
-group by dt_pedido
-order by dt_pedido;
+-- Povoamento da tabela pedidos_bkup - Inicialmente vazia, será preenchida pela trigger quando houver exclusão em pedido
 
-select date_format(dt_pedido, '%Y-%m') as mes, sum(valor_total) as faturamento_mensal
-from pedido
-group by date_format(dt_pedido, '%Y-%m')
-order by mes;
-
-select year(dt_pedido) as ano, sum(valor_total) as faturamento_anual
-from pedido
-group by year(dt_pedido)
-order by ano;
-
--- Forma de pagamento mais utilizadas
-select p.forma_pagamento, count(*) as quantidade_utilizacao
-from pedido p
-group by forma_pagamento
-order by quantidade_utilizacao desc;
-
--- Lista de atendentes com maior numero de vendas
-select a.cpf, f.nome, count(p.num_pedido) as numero_de_vendas
-from pedido p
-join atendentes a on p.atendente_cpf = a.cpf
-join funcionario f on a.cpf = f.cpf
-group by a.cpf, f.nome
-order by numero_de_vendas DESC;
-
--- Quantidade de pedidos feitos por atendentes da noite/atendentes da manhã
-select a.turno, count(p.num_pedido) as quantidade_pedidos
-from pedido p
-join atendentes a on p.atendente_cpf = a.cpf
-group by a.turno;
-
--- Funcionarios com salarios a cima da media
-select nome, salario
-from funcionario
-where salario > (
-    select avg(salario)
-    from funcionario
-);
-
--- Produtos que possuem mais de 3 igredientes
-select nome
-from produto
-where id_produto in (
-    select produto_id
-    from ingredientes_produto
-    group by produto_id
-    having count(*) > 3
-);
-
--- Ingredientes que estão proximos ao vencimento ( 1 semana )
-select nome, dt_validade 
-from ingredientes
-where datediff(dt_validade, CURDATE()) < 7;
-
--- Ingredientes Mais Utilizados nos 5 Produtos mais vendidos 
-select i.nome as ingrediente, count(*) as quantidade_utilizacao
-from ingredientes_produto ip
-join ingredientes i on ip.codigo_ingrediente = i.codigo
-where ip.produto_id in (
-    select produto_id
-    from (
-        select produto_id, sum(qnt_produto) as total_vendido
-        from pedido
-        group by produto_id
-        order by total_vendido desc
-        limit 5
-    ) as produtos_mais_vendidos
-)
-group by i.nome
-order by quantidade_utilizacao desc;
-
--- Selecionar o valor de um pedido especifico
-select num_pedido, sum(preco * qnt_produto) as valor_total_produtos
-from pedido
-join produto on pedido.produto_id = produto.id_produto
-where pedido.num_pedido = 2
-group by num_pedido
-order by num_pedido;
