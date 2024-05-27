@@ -33,6 +33,17 @@ public class PedidoService {
         return pedidoRepository.create(pedido);
     }
 
+    public Pedido[] create(Pedido[] pedidos){
+        for (Pedido pedido : pedidos){
+            if (pedido.getDtPedido().isBlank())
+            {throw new RuntimeException("Data do pedido em branco para" + pedido.getProdutoId());}
+            if (pedido.getQntProduto() <= 0)
+            {throw new RuntimeException("Quantidade do produto inválida para " + pedido.getProdutoId());}
+        }
+
+        return pedidoRepository.create(pedidos);
+    }
+
     public void delete(int id){
         ResumoPedido resumoPedido = pedidoRepository.resumoPedido(id);
         if (resumoPedido == null){

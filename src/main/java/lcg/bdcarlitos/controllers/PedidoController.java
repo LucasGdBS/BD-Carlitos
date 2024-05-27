@@ -84,6 +84,17 @@ public class PedidoController {
         }
     }
 
+    @PostMapping("/criar-pedidos")
+    public ResponseEntity<?> createPedidos(@RequestBody Pedido[] pedidos){
+        try{
+            return new ResponseEntity<>(pedidoService.create(pedidos), HttpStatus.CREATED);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Erro ao criar Pedidos: " + e.getMessage(),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteFuncionario(@PathVariable int id) {
         try {

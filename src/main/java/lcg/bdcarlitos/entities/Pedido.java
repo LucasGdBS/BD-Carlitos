@@ -11,6 +11,11 @@ public class Pedido {
     private float valorTotal; // Valor do produto * qntProduto
     private float valorSemDesconto;
     private float valorDesconto;
+    private String dtPedido;
+    private String formaPagamento;
+    private float taxaEntrega;
+    private float desconto;
+    private int qntProduto;
 
     public float getValorSemDesconto() {
         return valorSemDesconto;
@@ -28,32 +33,8 @@ public class Pedido {
         this.valorDesconto = valorDesconto;
     }
 
-    private String dtPedido;
-    private String formaPagamento;
-    private float taxaEntrega;
-    private float desconto;
-    private int qntProduto;
-
     public Pedido() {
     }
-
-//    public Pedido(int codigoNotalFiscal, int numeroPedido, int idCliente, String nomeCLiente, int produtoId,
-//                  String nomeProduto, String atendenteCpf, float valorTotal, String dtPedido, String formaPagamento,
-//                  float taxaEntrega, float desconto, int qntProduto) {
-//        this.codigoNotalFiscal = codigoNotalFiscal;
-//        this.numeroPedido = numeroPedido;
-//        this.idCliente = idCliente;
-//        this.nomeCLiente = nomeCLiente;
-//        this.produtoId = produtoId;
-//        this.nomeProduto = nomeProduto;
-//        this.atendenteCpf = atendenteCpf;
-//        this.valorTotal = valorTotal;
-//        this.dtPedido = dtPedido;
-//        this.formaPagamento = formaPagamento;
-//        this.taxaEntrega = taxaEntrega;
-//        this.desconto = desconto;
-//        this.qntProduto = qntProduto;
-//    }
 
     public int getCodigoNotalFiscal() {
         return codigoNotalFiscal;

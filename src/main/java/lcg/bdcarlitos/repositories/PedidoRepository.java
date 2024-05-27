@@ -1,6 +1,5 @@
 package lcg.bdcarlitos.repositories;
 
-import lcg.bdcarlitos.entities.Funcionario;
 import lcg.bdcarlitos.entities.Pedido;
 import lcg.bdcarlitos.entities.ResumoPedido;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,6 +65,21 @@ public class PedidoRepository {
                     pedido.getProdutoId(), pedido.getAtendenteCpf());
             return pedido;
         } catch (DataAccessException e) {
+            throw new RuntimeException(e.getCause());
+        }
+    }
+
+    public Pedido[] create(Pedido[] pedidos){
+        try{
+            String sql = "INSERT INTO pedido (codigo_nota_fiscal, num_pedido, dt_pedido, forma_pagamento, taxa_entrega, desconto, " +
+                    "qnt_produto, id_cliente, produto_id, atendente_cpf) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            for (Pedido pedido : pedidos){
+                jdbcTemplate.update(sql, pedido.getCodigoNotalFiscal(), pedido.getNumeroPedido(), pedido.getDtPedido(), pedido.getFormaPagamento(),
+                        pedido.getTaxaEntrega(), pedido.getDesconto(), pedido.getQntProduto(), pedido.getIdCliente(),
+                        pedido.getProdutoId(), pedido.getAtendenteCpf());
+            }
+            return pedidos;
+        }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
         }
     }
