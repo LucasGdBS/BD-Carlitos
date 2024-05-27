@@ -1,6 +1,5 @@
 package lcg.bdcarlitos.services;
 
-import lcg.bdcarlitos.entities.Funcionario;
 import lcg.bdcarlitos.entities.Pedido;
 import lcg.bdcarlitos.entities.ResumoPedido;
 import lcg.bdcarlitos.repositories.PedidoRepository;
