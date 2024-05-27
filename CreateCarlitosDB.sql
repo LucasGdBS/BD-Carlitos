@@ -104,7 +104,7 @@ create table dependentes(
 -- Tabela de Backup
 create table pedidos_bkup(
     num_pedido int,
-    codigo_nota_fiscal int unique,
+    codigo_nota_fiscal int,
     desconto float,
     qnt_produto int,
     id_cliente int,
