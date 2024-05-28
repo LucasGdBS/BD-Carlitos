@@ -32,7 +32,7 @@ public class ClienteRepository {
 
     public List<Cliente> getAll() {
         try {
-            String sql = "select * from Clientes";
+            String sql = "select * from clientes";
             return jdbcTemplate.query(sql, rowMapper);
         } catch (DataAccessException e) {
             throw new RuntimeException(e.getCause());
@@ -60,7 +60,7 @@ public class ClienteRepository {
 
     public List<Cliente> findByName(String name) {
         try {
-            String sql = "select * from Clientes where nome like ?";
+            String sql = "select * from clientes where nome like ?";
             return jdbcTemplate.query(sql, rowMapper, "%" + name + "%");
         } catch (DataAccessException e) {
             throw new RuntimeException(e.getCause());
@@ -69,7 +69,7 @@ public class ClienteRepository {
 
     public Cliente findByPhone(String phone) {
         try {
-            String sql = "select * from Clientes where (telefone_1 like ?) or (telefone_2 like ?) ";
+            String sql = "select * from clientes where (telefone_1 like ?) or (telefone_2 like ?) ";
 
             return jdbcTemplate.queryForObject(sql, rowMapper, "%" + phone + "%", "%" + phone + "%");
         } catch (DataAccessException e) {
@@ -79,7 +79,7 @@ public class ClienteRepository {
 
     public Cliente updateByPhone(String telefone, Cliente cliente) {
         try {
-            String sql = "UPDATE Clientes SET nome = ?, complemento = ?, rua = ?, bairro = ?, numero = ?, cep = ? " +
+            String sql = "UPDATE clientes SET nome = ?, complemento = ?, rua = ?, bairro = ?, numero = ?, cep = ? " +
                     "WHERE telefone_1 = ? or telefone_2 = ?";
             jdbcTemplate.update(sql,
                     cliente.getNome(),
@@ -99,7 +99,7 @@ public class ClienteRepository {
 
     public Cliente findById(int id) {
         try {
-            String sql = "select * from Clientes where id_cliente = ?";
+            String sql = "select * from clientes where id_cliente = ?";
             return jdbcTemplate.queryForObject(sql, rowMapper, id);
         } catch (DataAccessException e) {
             throw new RuntimeException(e.getCause());
