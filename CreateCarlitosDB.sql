@@ -85,6 +85,7 @@ create table ingredientes(
 create table ingredientes_produto(
 	produto_id int,
 	codigo_ingrediente int,
+    quantidade int,
 	constraint pk_ingredietes_produto primary key (produto_id, codigo_ingrediente),
 	constraint fk_produto_id_produto2 foreign key (produto_id) references produto(id_produto) on delete cascade,
 	constraint fk_ingredientes_codigo foreign key (codigo_ingrediente) references ingredientes(codigo) on delete cascade
@@ -152,7 +153,7 @@ begin
         -- Atualize a quantidade de ingredientes apenas para os relacionados ao produto no novo pedido
         update ingredientes i
         join ingredientes_produto ip on i.codigo = ip.codigo_ingrediente
-        set i.quantidade = i.quantidade - new.qnt_produto
+        set i.quantidade = i.quantidade - (new.qnt_produto * ip.quantidade)
         where ip.produto_id = new.produto_id
         and i.codigo = ingredientes_codigo; -- Adicionando esta condição para garantir que apenas o ingrediente atual seja atualizado
 
@@ -373,37 +374,37 @@ insert into ingredientes (nome, dt_validade, quantidade, tipo_alimento) values
 ('Refrigerante', '2025-01-31', 200, 'Unitario');
 
 -- Povoamento da tabela ingredientes_produto
-insert into ingredientes_produto (produto_id, codigo_ingrediente) values 
-(1, 1), -- Cheeseburger com Pão
-(1, 2), -- Cheeseburger com Carne
-(1, 3), -- Cheeseburger com Queijo
-(2, 1), -- Hamburger com Pão
-(2, 2), -- Hamburger com Carne
-(3, 1), -- Bacon Burger com Pão
-(3, 2), -- Bacon Burger com Carne
-(3, 3), -- Bacon Burger com Queijo
-(4, 1), -- Veggie Burger com Pão
-(4, 4), -- Veggie Burger com Alface
-(4, 5), -- Veggie Burger com Tomate
-(5, 1),  -- Double Cheeseburger com Pão
-(5, 2),  -- Double Cheeseburger com Carne
-(5, 3),  -- Double Cheeseburger com Queijo
-(5, 4),  -- Double Cheeseburger com Pão Integral
-(6, 1),  -- Chicken Burger com Pão
-(6, 8),  -- Chicken Burger com Frango
-(7, 1),  -- Fish Burger com Pão
-(7, 9),  -- Fish Burger com Peixe
-(8, 10),  -- Bacon Cheese Fries com Batata
-(8, 3),   -- Bacon Cheese Fries com Queijo
-(8, 11),  -- Bacon Cheese Fries com Bacon
-(9, 12),  -- Onion Rings com Cebola
-(10, 8),  -- Chicken Nuggets com Frango
-(11, 4),  -- Caesar Salad com Alface
-(11, 5),  -- Caesar Salad com Molho Caesar
-(12, 6),  -- Milkshake Chocolate com Molho Chocolate
-(13, 6),  -- Milkshake Morango com Molho Morango
-(14, 6),  -- Milkshake Baunilha com Molho Baunilha
-(15, 13);  -- Coca-Cola Lata com Refrigerante
+insert into ingredientes_produto (produto_id, codigo_ingrediente, quantidade) values
+(1, 1, 1), -- Cheeseburger com Pão
+(1, 2, 1), -- Cheeseburger com Carne
+(1, 3, 1), -- Cheeseburger com Queijo
+(2, 1, 1), -- Hamburger com Pão
+(2, 2, 1), -- Hamburger com Carne
+(3, 1, 1), -- Bacon Burger com Pão
+(3, 2, 1), -- Bacon Burger com Carne
+(3, 3, 1), -- Bacon Burger com Queijo
+(4, 1, 1), -- Veggie Burger com Pão
+(4, 4, 1), -- Veggie Burger com Alface
+(4, 5, 1), -- Veggie Burger com Tomate
+(5, 1, 1),  -- Double Cheeseburger com Pão
+(5, 2, 1),  -- Double Cheeseburger com Carne
+(5, 3, 1),  -- Double Cheeseburger com Queijo
+(5, 4, 1),  -- Double Cheeseburger com Pão Integral
+(6, 1, 1),  -- Chicken Burger com Pão
+(6, 8, 1),  -- Chicken Burger com Frango
+(7, 1, 1),  -- Fish Burger com Pão
+(7, 9, 1),  -- Fish Burger com Peixe
+(8, 10, 1),  -- Bacon Cheese Fries com Batata
+(8, 3, 1),   -- Bacon Cheese Fries com Queijo
+(8, 11, 1),  -- Bacon Cheese Fries com Bacon
+(9, 12, 1),  -- Onion Rings com Cebola
+(10, 8, 1),  -- Chicken Nuggets com Frango
+(11, 4, 1),  -- Caesar Salad com Alface
+(11, 5, 1),  -- Caesar Salad com Molho Caesar
+(12, 6, 1),  -- Milkshake Chocolate com Molho Chocolate
+(13, 6, 1),  -- Milkshake Morango com Molho Morango
+(14, 6, 1),  -- Milkshake Baunilha com Molho Baunilha
+(15, 13, 1);  -- Coca-Cola Lata com Refrigerante
 
 -- Povoamento da tabela pedido
 insert into pedido (codigo_nota_fiscal, dt_pedido, forma_pagamento, taxa_entrega, desconto, qnt_produto, num_pedido, id_cliente, produto_id, atendente_cpf) values 
