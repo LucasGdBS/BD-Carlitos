@@ -36,7 +36,7 @@ public class FuncionarioRepository {
 
     public Funcionario create(Funcionario funcionario) {
         try {
-            String sql = "INSERT INTO Funcionario(cpf, nome, salario) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO funcionario(cpf, nome, salario) VALUES (?, ?, ?)";
             jdbcTemplate.update(sql, funcionario.getCpf(), funcionario.getNome(), funcionario.getSalario());
             return funcionario;
         } catch (DataAccessException e) {
@@ -46,7 +46,7 @@ public class FuncionarioRepository {
 
     public List<Funcionario> findByName(String name){
         try{
-            String sql = "select * from Funcionario where nome like ?";
+            String sql = "select * from funcionario where nome like ?";
             return jdbcTemplate.query(sql, rowMapper, "%"+name+"%");
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
@@ -55,7 +55,7 @@ public class FuncionarioRepository {
 
     public Funcionario findByCpf(String cpf) {
         try {
-            String sql = "SELECT * FROM Funcionario WHERE cpf = ?";
+            String sql = "SELECT * FROM funcionario WHERE cpf = ?";
             return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -64,7 +64,7 @@ public class FuncionarioRepository {
 
     public Funcionario updateByCpf(String cpf, Funcionario funcionario){
         try{
-            String sql = "UPDATE Funcionario SET nome = ?, salario = ? WHERE cpf = ?";
+            String sql = "UPDATE funcionario SET nome = ?, salario = ? WHERE cpf = ?";
             jdbcTemplate.update(sql, funcionario.getNome(), funcionario.getSalario(), cpf);
             return funcionario;
         }catch (DataAccessException e){
@@ -73,7 +73,7 @@ public class FuncionarioRepository {
     }
 
     public void deleteFuncionario(String cpf){
-        String sql = "delete from Funcionario where cpf = ?";
+        String sql = "delete from funcionario where cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
 }

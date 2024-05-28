@@ -29,8 +29,8 @@ public class GerenteRepository {
 
     public List<Funcionario> getAll(){
         try{
-            String sql = "SELECT f.cpf, f.nome, f.salario FROM Gerente g " +
-                    "JOIN Funcionario f ON f.cpf = g.cpf";
+            String sql = "SELECT f.cpf, f.nome, f.salario FROM gerente g " +
+                    "JOIN funcionario f ON f.cpf = g.cpf";
             return jdbcTemplate.query(sql, rowMapper);
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());
@@ -39,7 +39,7 @@ public class GerenteRepository {
 
     public void create(String cpf){
         try {
-            String sql = "INSERT INTO Gerente(cpf) VALUES (?)";
+            String sql = "INSERT INTO gerente(cpf) VALUES (?)";
             System.out.println(cpf);
             jdbcTemplate.update(sql, cpf);
         } catch (DataAccessException e) {
@@ -52,8 +52,8 @@ public class GerenteRepository {
 
     public List<Funcionario> findByName(String name){
         try{
-            String sql = "SELECT f.cpf, f.nome, f.salario FROM Gerente g " +
-                    "JOIN Funcionario f ON f.cpf = g.cpf " +
+            String sql = "SELECT f.cpf, f.nome, f.salario FROM gerente g " +
+                    "JOIN funcionario f ON f.cpf = g.cpf " +
                     "where f.nome like ?";
             return jdbcTemplate.query(sql, rowMapper, "%"+name+"%");
         }catch (DataAccessException e){
@@ -63,8 +63,8 @@ public class GerenteRepository {
 
     public Funcionario findByCpf(String cpf) {
         try {
-            String sql = "SELECT f.cpf, f.nome, f.salario FROM Gerente g " +
-                    "JOIN Funcionario f ON f.cpf = g.cpf " +
+            String sql = "SELECT f.cpf, f.nome, f.salario FROM gerente g " +
+                    "JOIN funcionario f ON f.cpf = g.cpf " +
                     "where f.cpf = ?";
             return jdbcTemplate.queryForObject(sql, rowMapper, cpf);
         } catch (EmptyResultDataAccessException e) {
@@ -73,7 +73,7 @@ public class GerenteRepository {
     }
 
     public void deleteGerente(String cpf){
-        String sql = "delete from Gerente where cpf = ?";
+        String sql = "delete from gerente where cpf = ?";
         jdbcTemplate.update(sql, cpf);
     }
 }
