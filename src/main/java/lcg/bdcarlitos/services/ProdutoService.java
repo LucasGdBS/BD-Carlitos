@@ -16,14 +16,14 @@ public class ProdutoService {
 
     public List<Produto> getAll() { return produtoRepository.getAll(); }
 
-    public Produto create(Produto produto, int[] ingredientes){
+    public Produto create(Produto produto, int[] ingredientes, int[] quantidadeIngredientes){
         try{
             if (produto.getNome().isBlank()){throw new RuntimeException("Campo nome vazio");}
             Produto produtoCriado = produtoRepository.create(produto);
             produto.setId_produto(getAll().size()+1);
             produtoCriado.setId_produto(getAll().getLast().getId_produto());
 
-            produtoRepository.defineIngredientes(produtoCriado.getId_produto(),ingredientes);
+            produtoRepository.defineIngredientes(produtoCriado.getId_produto(),ingredientes, quantidadeIngredientes);
             return produtoCriado;
         }catch (Exception e){
             throw new RuntimeException(e.getCause());

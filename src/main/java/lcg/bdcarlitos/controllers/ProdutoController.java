@@ -53,7 +53,7 @@ public class ProdutoController {
     public ResponseEntity<?> createProduto(@RequestBody Produto produto){
         try{
             System.out.println(Arrays.toString(produto.getIngredientes()));
-            return new ResponseEntity<>(produtoService.create(produto, produto.getIngredientes()), HttpStatus.CREATED);
+            return new ResponseEntity<>(produtoService.create(produto, produto.getIngredientes(), produto.getQuantidadeIngredientes()), HttpStatus.CREATED);
         }
         catch (Exception e){
             return new ResponseEntity<>("Erro ao criar Produto: " + e.getMessage(),

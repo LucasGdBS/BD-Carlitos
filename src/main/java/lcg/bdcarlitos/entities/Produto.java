@@ -6,6 +6,16 @@ public class Produto {
     private double preco;
     private int[] ingredientes;
 
+    private int[] quantidadeIngredientes;
+
+    public int[] getQuantidadeIngredientes() {
+        return quantidadeIngredientes;
+    }
+
+    public void setQuantidadeIngredientes(int[] quantidadeIngredientes) {
+        this.quantidadeIngredientes = quantidadeIngredientes;
+    }
+
     public int[] getIngredientes() {
         return ingredientes;
     }

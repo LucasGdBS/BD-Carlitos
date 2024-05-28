@@ -51,6 +51,8 @@ public class ProdutoRepository {
         ingrediente.setQuantidade(rs.getInt("quantidade"));
         ingrediente.setCodigo(rs.getInt("codigo"));
         ingrediente.setTipoAlimento(rs.getString("tipo_alimento"));
+        ingrediente.setQuantidadeNoProduto(rs.getInt("quantidade_no_produto"));
+
         return ingrediente;
     };
 
@@ -123,16 +125,18 @@ public class ProdutoRepository {
         jdbcTemplate.update(sql, id);
     }
 
-    public void defineIngredientes(int idProduto ,int[] ingredientes){
-        String sql = "INSERT INTO ingredientes_produto(produto_id, codigo_ingrediente) values " +
-                "(?, ?)";
+    public void defineIngredientes(int idProduto ,int[] ingredientes, int[] quantidades){
+        String sql = "INSERT INTO ingredientes_produto(produto_id, codigo_ingrediente, quantidade) values " +
+                "(?, ?, ?)";
+        int i = 0;
         for (int ingrediente: ingredientes){
-            jdbcTemplate.update(sql, idProduto, ingrediente);
+            jdbcTemplate.update(sql, idProduto, ingrediente, quantidades[i]);
+            i++;
         }
     }
 
     public List<Ingrediente> getIngredientesByProduto(int idProduto){
-        String sql = "select i.* from ingredientes_produto ip " +
+        String sql = "select i.*, ip.quantidade as quantidade_no_produto from ingredientes_produto ip " +
                 "join produto p on p.id_produto = ip.produto_id " +
                 "join ingredientes i on i.codigo = ip.codigo_ingrediente " +
                 "where p.id_produto =  ?";

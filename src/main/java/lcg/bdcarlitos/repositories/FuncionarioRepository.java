@@ -27,7 +27,7 @@ public class FuncionarioRepository {
 
     public List<Funcionario> getAll(){
         try{
-            String sql = "select * from Funcionario";
+            String sql = "select * from funcionario";
             return jdbcTemplate.query(sql, rowMapper);
         }catch (DataAccessException e){
             throw new RuntimeException(e.getCause());

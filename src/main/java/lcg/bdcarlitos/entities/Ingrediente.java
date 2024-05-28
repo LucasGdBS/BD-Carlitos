@@ -9,14 +9,17 @@ public class Ingrediente {
     private int codigo;
     private String tipoAlimento;
 
-    public Ingrediente() {
+    private int quantidadeNoProduto;
+
+    public int getQuantidadeNoProduto() {
+        return quantidadeNoProduto;
     }
-    public Ingrediente(String nome, String dtValidade, int quantidade, int codigo, String tipoAlimento) {
-        this.nome = nome;
-        this.dtValidade = dtValidade;
-        this.quantidade = quantidade;
-        this.codigo = codigo;
-        this.tipoAlimento = tipoAlimento;
+
+    public void setQuantidadeNoProduto(int quantidadeNoProduto) {
+        this.quantidadeNoProduto = quantidadeNoProduto;
+    }
+
+    public Ingrediente() {
     }
 
     public String getNome() {
